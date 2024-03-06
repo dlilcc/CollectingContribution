@@ -82,6 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         button:hover {
             background-color: #0056b3;
         }
+        .login-link {
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -95,6 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="confirm_password" placeholder="Confirm Password" required>
         <button type="submit">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="login.php">Log in here</a></p>
+    <div class="login-link">
+        <p>Already have an account? <a href="login.php">Log in here</a></p>
+    </div>
 </body>
 </html>

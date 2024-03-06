@@ -18,7 +18,7 @@ $error = '';
 // Process login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve username and password from form submission
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
 
     // Validate username and password
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
             $error = 'Invalid username or password.';
-        }
+        } 
     }
 }
 ?>
@@ -81,6 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
             margin-top: 10px;
         }
+        .guest-login {
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -96,6 +100,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="signup-link">
         <p>Don't have an account? <a href="signup.php">Sign up here</a></p>
     </div>
+    <div class="guest-login">
+        <p>Continue as a guest? <a href="guestLogin.php">Guest Login</a></p>
+    </div>
 </body>
 </html>
+
 
