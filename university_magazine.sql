@@ -3,7 +3,7 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'coordinator', 'student') NOT NULL
+    role ENUM('admin', 'coordinator', 'student', 'manager', 'guest') NOT NULL
 );
 
 -- Create the 'faculties' table to store information about university faculties

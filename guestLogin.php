@@ -18,7 +18,7 @@ $guest_password = '123456';
 // Log in the guest user
 $_SESSION['user'] = array(
     'username' => $guest_username,
-    'role' => 'guest' // You can set the role of the guest user as needed
+    'role' => 'guest' 
 );
 
 // Redirect to the index page after successful login

@@ -57,6 +57,9 @@ $user = get_user($_SESSION['user']['username']);
             <?php if (has_role('student')) : ?>
                 <li><a href="student_dashboard.php">Student Dashboard</a></li>
             <?php endif; ?>
+            <?php if (has_role('student')) : ?>
+                <li><a href="student/write_article.php">Write your article</a></li>
+            <?php endif; ?>
         </ul>
     </div>
 </body>
