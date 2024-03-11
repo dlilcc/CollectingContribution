@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // File upload handling
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = 'uploads/';
+        $upload_dir = 'images/';
         $image_name = uniqid('image_') . '_' . $_FILES['image']['name'];
         move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $image_name);
     } else {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Insert article into database with submission date
-    $stmt = $conn->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)");
+    $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)");
     $stmt->execute([$article_title, $article_content, $image_name, $user_id]);
 
     // Redirect to submission confirmation page

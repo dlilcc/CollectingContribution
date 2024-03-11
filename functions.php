@@ -4,13 +4,12 @@ include('includes/config.php');
 
 // Function to validate user credentials
 function validate_user($username, $password) {
-    global $conn;
+    global $pdo;
     
-    $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
+    $stmt = $pdo->prepare("SELECT id, username, password, role FROM users WHERE username = :username");
+    $stmt->bindParam(':username', $username);
     $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($user && password_verify($password, $user['password'])) {
         return $user;
@@ -21,13 +20,12 @@ function validate_user($username, $password) {
 
 // Function to fetch user details from the database
 function get_user($username) {
-    global $conn;
+    global $pdo;
     
-    $stmt = $conn->prepare("SELECT id, username, role FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
+    $stmt = $pdo->prepare("SELECT id, username, role FROM users WHERE username = :username");
+    $stmt->bindParam(':username', $username);
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_assoc();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 // Function to check if a user is logged in
@@ -42,13 +40,12 @@ function has_role($role) {
 
 // Function to check if a username already exists in the database
 function username_exists($username) {
-    global $conn;
+    global $pdo;
     
-    $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
+    $stmt = $pdo->prepare("SELECT COUNT(*) AS count FROM users WHERE username = :username");
+    $stmt->bindParam(':username', $username);
     $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return $row['count'] > 0;
 }
@@ -56,13 +53,15 @@ function username_exists($username) {
 
 // Function to register a new user
 function register_user($username, $password) {
-    global $conn;
+    global $pdo;
     
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $role = 'student'; // Default role for new users
     
-    $stmt = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $username, $hashed_password, $role);
+    $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES (:username, :password, :role)");
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', $hashed_password);
+    $stmt->bindParam(':role', $role);
     return $stmt->execute();
 }
 ?>

@@ -9,6 +9,7 @@
     <h1>Submission Confirmation</h1>
     <p>Your article has been successfully submitted!</p>
     <p>Thank you for your contribution to the university magazine.</p>
+    <p><a href="../index.php">Let's back to dash board!</a></p>
     <!-- You can provide additional information or links here -->
 </body>
 </html>
