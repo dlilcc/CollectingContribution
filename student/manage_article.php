@@ -40,8 +40,11 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
                     <td><?php echo htmlspecialchars($article['title']); ?></td>
                     <td>
+                        <a href="view_article.php?id=<?php echo $article['id']; ?>">View</a>
                         <a href="edit_article.php?id=<?php echo $article['id']; ?>">Edit</a>
                         <a href="delete_article.php?id=<?php echo $article['id']; ?>">Delete</a>
+                        <a href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
+
                     </td>
                 </tr>
             <?php endforeach; ?>

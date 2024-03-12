@@ -11,8 +11,6 @@ if (!isset($_SESSION['user'])) {
 // Include database connection
 require_once __DIR__ . '/../includes/config.php';
 
-
-
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve article data from the form
@@ -20,18 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $article_content = $_POST['article_content'];
     $user_id = $_SESSION['user']['id']; // Assuming user ID is stored in the session
 
-    // File upload handling
+    // File upload handling for image
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $upload_dir = 'images/';
         $image_name = uniqid('image_') . '_' . $_FILES['image']['name'];
         move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $image_name);
+        $image_url = $upload_dir . $image_name;
     } else {
-        $image_name = ''; // Set default image name if no image uploaded
+        $image_url = ''; // Set default image URL if no image uploaded
     }
 
-    // Insert article into database with submission date
+    // Insert article into database with submission date and image URL
     $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)");
-    $stmt->execute([$article_title, $article_content, $image_name, $user_id]);
+    $stmt->execute([$article_title, $article_content, $image_url, $user_id]);
 
     // Redirect to submission confirmation page
     header('Location: submission_confirmation.php');
