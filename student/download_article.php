@@ -11,7 +11,7 @@ if(isset($_GET['id'])) {
     $article_id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
 
     // Retrieve the article content from the database based on the article ID
-    $stmt = $pdo->prepare("SELECT title, content FROM articles WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT title, content, image_url FROM articles WHERE id = ?");
     $stmt->execute([$article_id]);
     $article = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -31,8 +31,15 @@ if(isset($_GET['id'])) {
         // Add content
         $section->addText(htmlspecialchars($article['content']));
 
+        // Check if an image URL is provided
+        if (!empty($article['image_url'])) {
+            // Add the image to the document
+            $imagePath = 'images/' . basename($article['image_url']);
+            $section->addImage($imagePath, ['width' => 200, 'height' => 200]);
+        }
+
         // Save the document
-        $tempFilePath = tempnam(sys_get_temp_dir(), 'article_');
+        $tempFilePath = tempnam('sys_get_temp_dir()', 'article_');
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save($tempFilePath);
 

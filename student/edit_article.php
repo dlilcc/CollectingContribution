@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (move_uploaded_file($tmp_image_path, $image_path)) {
             // Image uploaded successfully, update the database with the new image path
             $stmt = $pdo->prepare("UPDATE articles SET title = ?, content = ?, image_url = ? WHERE id = ?");
-            $stmt->execute([$article_title, $article_content, $image_filename, $article_id]);
+            $stmt->execute([$article_title, $article_content, $image_path, $article_id]);
         } else {
             // Failed to move uploaded image, handle error as needed
             // You may display an error message or redirect back to the edit form
