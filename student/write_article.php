@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once __DIR__ . '/../includes/config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
@@ -8,6 +8,11 @@ if (!isset($_SESSION['user'])) {
     header('Location: /CollectingContribution/login.php');
     exit;
 }
+// $user_id = $_SESSION['user']['id'];
+// $stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
+// $stmt -> execute([$user_id]);
+// $user_faculty = $stmt -> fetch(PDO::FETCH_ASSOC);
+// echo $user_faculty['faculty_name'];
 ?>
 
 <!DOCTYPE html>
@@ -30,8 +35,7 @@ if (!isset($_SESSION['user'])) {
         <br><br>
         <!-- Include file input for image upload -->
         <label for="image">Article Image:</label><br>
-        <input type="file" id="image" name="image">
-        <br><br>
+        <input type="file" id="image" name="image"><br><br>
         <button type="submit">Submit</button>
     </form>
 

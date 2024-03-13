@@ -28,6 +28,24 @@ function get_user($username) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+// // Include database configuration
+require_once 'includes/config.php';
+
+// Function to retrieve list of faculties from the database
+function get_faculties() {
+    global $pdo;
+
+    // Prepare and execute SQL query to fetch faculties
+    $stmt = $pdo->query("SELECT faculty_name FROM faculty");
+    if ($stmt) {
+        // Fetch all rows as associative array
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        // Handle error if query fails
+        return [];
+    }
+}
+
 // Function to check if a user is logged in
 function is_logged_in() {
     return isset($_SESSION['user']);
@@ -52,16 +70,17 @@ function username_exists($username) {
 
 
 // Function to register a new user
-function register_user($username, $password) {
+function register_user($username, $password, $faculty) {
     global $pdo;
     
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $role = 'student'; // Default role for new users
     
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES (:username, :password, :role)");
+    $stmt = $pdo->prepare("INSERT INTO users (username, password, role, faculty_name) VALUES (:username, :password, :role, :faculty_name)");
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':password', $hashed_password);
     $stmt->bindParam(':role', $role);
+    $stmt->bindParam(':faculty_name', $faculty);
     return $stmt->execute();
 }
 ?>

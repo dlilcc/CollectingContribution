@@ -54,6 +54,9 @@ $user = get_user($_SESSION['user']['username']);
             <?php if (has_role('admin')) : ?>
                 <li><a href="administrator/manage_closure_dates.php">Manage Closure Dates</a></li>
             <?php endif; ?>
+            <?php if (has_role('admin')) : ?>
+                <li><a href="administrator/manage_faculty.php">Manage Faculty</a></li>
+            <?php endif; ?>
             <?php if (has_role('coordinator')) : ?>
                 <li><a href="coordinator_dashboard.php">Coordinator Dashboard</a></li>
             <?php endif; ?>

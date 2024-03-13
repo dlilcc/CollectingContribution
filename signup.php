@@ -12,9 +12,10 @@ if (is_logged_in()) {
 
 // Initialize variables
 $username = '';
-$password = '';
-$confirm_password = '';
 $error = '';
+
+// Fetch faculties from the database
+$faculties = get_faculties();
 
 // Process registration form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -22,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    $selected_faculty = $_POST['faculty'];
 
     // Validate form data
     if (empty($username) || empty($password) || empty($confirm_password)) {
@@ -34,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Username already exists. Please choose a different username.';
         } else {
             // Register new user
-            if (register_user($username, $password)) {
+            if (register_user($username, $password, $selected_faculty)) {
                 // Redirect to login page after successful registration
                 header('Location: login.php?registered=true');
                 exit;
@@ -53,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - University Magazine</title>
     <style>
+        /* Add your CSS styles here */
         form {
             margin: auto;
             width: 300px;
@@ -66,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         input[type="text"],
         input[type="password"],
+        select,
         button {
             display: block;
             margin-bottom: 10px;
@@ -92,11 +96,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2>Sign Up - University Magazine</h2>
     <form method="post">
         <?php if (!empty($error)) : ?>
-            <div class="error"><?php echo $error; ?></div>
+            <div class="error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
-        <input type="text" name="username" placeholder="Username" value="<?php echo htmlentities($username); ?>" required>
+        <input type="text" name="username" placeholder="Username" value="<?php echo htmlspecialchars($username); ?>" required>
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        <select name="faculty">
+            <option value="">Select Faculty</option>
+            <?php foreach (get_faculties() as $faculty) : ?>
+                <option value="<?php echo htmlentities($faculty['faculty_name']); ?>"><?php echo htmlentities($faculty['faculty_name']); ?></option>
+            <?php endforeach; ?>
+        </select>
         <button type="submit">Sign Up</button>
     </form>
     <div class="login-link">

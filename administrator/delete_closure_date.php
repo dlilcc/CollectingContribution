@@ -19,13 +19,6 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-
-
-
-
-
-
-
 if (isset($_GET['id'])){
     // Sanitize the closure date ID
     $closureDateId = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);

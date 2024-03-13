@@ -10,6 +10,7 @@ if (!isset($_SESSION['user'])) {
 
 // Include database connection
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../functions.php';
 
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -17,6 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $article_title = $_POST['article_title'];
     $article_content = $_POST['article_content'];
     $user_id = $_SESSION['user']['id']; // Assuming user ID is stored in the session
+
+    // Fetch user's faculty information from the database
+    $stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
 
     // File upload handling for image
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -29,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Insert article into database with submission date and image URL
-    $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)");
-    $stmt->execute([$article_title, $article_content, $image_url, $user_id]);
+    $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)");
+    $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name']]);
 
     // Redirect to submission confirmation page
     header('Location: submission_confirmation.php');
@@ -41,3 +49,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
+
