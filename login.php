@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php');
             exit;
         } else {
-            $error = 'Invalid username or password.';
+            $error = 'Invalid username or password. Please try again!';
         } 
     }
 }
