@@ -17,11 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve form data
     $academicYear = $_POST['academicYear'];
     $closureDate = $_POST['closureDate'];
+    $finalClosureDate = $_POST['finalClosureDate'];
+
 
     // Insert closure date into database
-    $stmt = $pdo->prepare("INSERT INTO closure_dates (academic_year, closure_date) VALUES (:academicYear, :closureDate)");
+    $stmt = $pdo->prepare("INSERT INTO closure_dates (academic_year, closure_date, final_closure_date) VALUES (:academicYear, :closureDate, :finalClosureDate)");
     $stmt->bindParam(':academicYear', $academicYear);
     $stmt->bindParam(':closureDate', $closureDate);
+    $stmt->bindParam(':finalClosureDate', $finalClosureDate);
     $stmt->execute();
 
     // Redirect to manage closure dates page

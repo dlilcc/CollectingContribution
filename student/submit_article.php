@@ -14,6 +14,18 @@ require_once __DIR__ . '/../functions.php';
 
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    // Check if the Terms and Conditions checkbox is checked
+    // If the checkbox is checked, proceed with article submission
+    if (!isset($_POST['agree_terms'])) {
+        // Display an error message and redirect back to the write article page
+        $_SESSION['error'] = 'You must agree to the Terms and Conditions before submitting.';
+        header('Location: write_article.php');
+        exit;
+    }
+
+
+
     // Retrieve article data from the form
     $article_title = $_POST['article_title'];
     $article_content = $_POST['article_content'];

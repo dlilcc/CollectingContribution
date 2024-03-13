@@ -36,7 +36,16 @@ if (!isset($_SESSION['user'])) {
         <!-- Include file input for image upload -->
         <label for="image">Article Image:</label><br>
         <input type="file" id="image" name="image"><br><br>
-        <button type="submit">Submit</button>
+        <form method="post" enctype="multipart/form-data">
+            <!-- Other form fields -->
+            <label for="agree_terms">
+                <input type="checkbox" name="agree_terms" id="agree_terms" required>
+                I agree to the Terms and Conditions
+            </label>
+            <button type="submit" name="submit">Submit Article</button>
+        </form>
+
+        <!--<button type="submit">Submit</button>-->
     </form>
 
     <!-- Initialize CKEditor -->

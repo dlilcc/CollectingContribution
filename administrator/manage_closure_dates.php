@@ -58,6 +58,8 @@ if ($stmt) {
         <input type="text" id="academicYear" name="academicYear" required>
         <label for="closureDate">Closure Date:</label>
         <input type="date" id="closureDate" name="closureDate" required>
+        <label for="finalClosureDate">Final Closure Date:</label>
+        <input type="date" id="finalClosureDate" name="finalClosureDate" required>
         <button type="submit">Add Closure Date</button>
     </form>
 
@@ -67,6 +69,7 @@ if ($stmt) {
             <tr>
                 <th>Academic Year</th>
                 <th>Closure Date</th>
+                <th>Final Closure Date</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -75,6 +78,7 @@ if ($stmt) {
                 <tr>
                     <td><?php echo $closureDate['academic_year']; ?></td>
                     <td><?php echo $closureDate['closure_date']; ?></td>
+                    <td><?php echo $closureDate['final_closure_date']; ?></td>
                     <td>
                         <a href="edit_closure_date.php?id=<?php echo $closureDate['id']; ?>">Edit</a>
                         <a href="delete_closure_date.php?id=<?php echo $closureDate['id']; ?>&confirmed=true" onclick="return confirm('Are you sure you want to delete this closure date?')">Delete</a>
