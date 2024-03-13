@@ -40,12 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve form data
     $academicYear = $_POST['academicYear'];
     $closureDate = $_POST['closureDate'];
+    $finalClosureDate = $_POST['finalClosureDate'];
 
     // Update closure date in the database
-    $stmt = $pdo->prepare("UPDATE closure_dates SET academic_year = :academicYear, closure_date = :closureDate WHERE id = :closureDateId");
+    $stmt = $pdo->prepare("UPDATE closure_dates SET academic_year = :academicYear, closure_date = :closureDate, final_closure_date = :finalClosureDate WHERE id = :closureDateId");
     $stmt->bindParam(':academicYear', $academicYear);
     $stmt->bindParam(':closureDate', $closureDate);
     $stmt->bindParam(':closureDateId', $closureDateId);
+    $stmt->bindParam(':finalClosureDate', $finalClosureDate);
     $stmt->execute();
 
     // Redirect to manage closure dates page
@@ -76,8 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="" method="post">
         <label for="academicYear">Academic Year:</label>
         <input type="text" id="academicYear" name="academicYear" value="<?php echo htmlspecialchars($closureDate['academic_year']); ?>" required>
+        
         <label for="closureDate">Closure Date:</label>
         <input type="date" id="closureDate" name="closureDate" value="<?php echo htmlspecialchars($closureDate['closure_date']); ?>" required>
+        
+        <label for="finalClosureDate">Final Closure Date:</label>
+        <input type="date" id="finalClosureDate" name="finalClosureDate" value="<?php echo htmlspecialchars($closureDate['final_closure_date']); ?>" required>
+        
         <button type="submit">Save Changes</button>
     </form>
 </body>
