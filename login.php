@@ -40,14 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<link rel="stylesheet" href="login.css" />
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - University Magazine</title>
+    <title>LOGIN - UNIVERSITY MAGAZINE </title>
     <style>
+        
         form {
             margin: auto;
             width: 300px;
@@ -58,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .error {
             color: red;
             margin-bottom: 10px;
+            font-family: 'verdana';
         }
         input[type="text"],
         input[type="password"],
@@ -86,9 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-top: 10px;
         }
     </style>
+    
 </head>
 <body>
-    <h2>Login - University Magazine</h2>
+    <h2>UNIVERSITY MAGAZINE</h2>
     <form method="post">
         <?php if (!empty($error)) : ?>
             <div class="error"><?php echo $error; ?></div>
