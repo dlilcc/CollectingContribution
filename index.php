@@ -68,7 +68,7 @@ $user = get_user($_SESSION['user']['username']);
                 <li><a href="coordinator_dashboard.php">Coordinator Dashboard</a></li>
             <?php endif; ?>
             <?php if (has_role('student')) : ?>
-                <li><a href="student_dashboard.php">Student Dashboard</a></li>
+                <a href="student_dashboard.php">Student Dashboard</a>
             <?php endif; ?>
             <?php if (has_role('student')) : ?>
                 <li><a href="student/write_article.php">Write your article</a></li>
