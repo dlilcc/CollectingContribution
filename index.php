@@ -56,10 +56,10 @@ $user = get_user($_SESSION['user']['username']);
                 <a href="admin_dashboard.php">Admin Dashboard</a>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
-                <li><a href="administrator/manage_user.php">Manage User</a></li>
+                <a href="administrator/manage_user.php">Manage User</a>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
-                <li><a href="administrator/manage_closure_dates.php">Manage Closure Dates</a></li>
+                <a href="administrator/manage_closure_dates.php">Manage Closure Dates</a>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
                 <li><a href="administrator/manage_faculty.php">Manage Faculty</a></li>
