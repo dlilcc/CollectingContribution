@@ -49,7 +49,7 @@ $user = get_user($_SESSION['user']['username']);
         <h2>Dashboard</h2>
         <ul>
             <?php if (has_role('admin')) : ?>
-                <li><a href="admin_dashboard.php">Admin Dashboard</a></li>
+                <a href="admin_dashboard.php">Admin Dashboard</a>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
                 <li><a href="administrator/manage_user.php">Manage User</a></li>
