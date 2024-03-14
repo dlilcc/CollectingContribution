@@ -1,0 +1,12 @@
+h2{
+    color: #273c75;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 50px;
+    font-family: 'verdana';
+}
+html {
+    background: url('https://i.guim.co.uk/img/media/660dfc865d13dd785ae526c12cf429df40fbdda1/41_726_2305_1382/master/2305.jpg?width=1200&quality=85&auto=format&fit=max&s=ff1171447f8f0d3ebbdccc697681e7ab');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
