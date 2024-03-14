@@ -27,6 +27,8 @@ $_SESSION['last_activity'] = time();
 $user = get_user($_SESSION['user']['username']);
 ?>
 
+<link rel="stylesheet" href="index.css" />
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,13 +38,15 @@ $user = get_user($_SESSION['user']['username']);
     <style>
         .logout {
             float: right;
-            margin-top: 10px;
+            margin-top: 1px;
+            font-size: 30px;
+            font-family: 'verdana';
         }
     </style>
 </head>
 <body>
     <div>
-        <h1>Welcome, <?php echo $user['username']; ?>!</h1>
+        <h1>Welcome To University Magazine, <?php echo $user['username']; ?>!</h1>
         <a href="logout.php" class="logout">Logout</a>
     </div>
     <div>
@@ -52,7 +56,7 @@ $user = get_user($_SESSION['user']['username']);
                 <a href="admin_dashboard.php">Admin Dashboard</a>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
-                <a href="administrator/manage_user.php">Manage User</a>
+                <li><a href="administrator/manage_user.php">Manage User</a></li>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
                 <li><a href="administrator/manage_closure_dates.php">Manage Closure Dates</a></li>

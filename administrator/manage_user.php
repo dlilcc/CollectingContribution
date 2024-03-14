@@ -53,6 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+<link rel="stylesheet" href="manage_user.css" />
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </tr>
             <?php endforeach; ?>
         </tbody>
-    </table>                         
-    <h1><a href="../index.php" class="logout">Back</a></h1>                              
+    </table>
+    <a href="../index.php" class="logout">Back</a>                                
 </body>
 </html>

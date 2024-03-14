@@ -48,12 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
+<link rel="stylesheet" href="signup.css" />
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - University Magazine</title>
+    <title>University Magazine</title>
     <style>
         /* Add your CSS styles here */
         form {
@@ -93,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <h2>Sign Up - University Magazine</h2>
+    <h2>UNIVERSITY MAGAZINE</h2>
     <form method="post">
         <?php if (!empty($error)) : ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
