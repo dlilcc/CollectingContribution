@@ -74,7 +74,7 @@ $user = get_user($_SESSION['user']['username']);
                 <li><a href="student/write_article.php">Write your article</a></li>
             <?php endif; ?>
             <?php if (has_role('student')) : ?>
-                <li><a href="student/manage_article.php">Manage your article</a></li>
+                <a href="student/manage_article.php">Manage your article</a>
             <?php endif; ?>
         </ul>
     </div>
