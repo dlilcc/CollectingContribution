@@ -152,6 +152,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endforeach; ?>
         </tbody>
     </table>
-    <a href="../index.php" class="logout">Back</a>                              
+    <h1><a href="../index.php" class="logout">Back</a></h1>                             
 </body>
 </html>
