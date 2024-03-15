@@ -10,6 +10,7 @@ if (!isset($_SESSION['user'])) {
 
 // Include database connection
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../functions.php';
 
 // Check if article ID is provided
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -25,6 +26,7 @@ $stmt = $pdo->prepare("SELECT * FROM articles WHERE id = ? AND user_id = ?");
 $stmt->execute([$article_id, $user_id]);
 $article = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
 // Check if article exists and belongs to the logged-in user
 if (!$article) {
     // Redirect to some error page or display an error message
@@ -37,36 +39,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $article_title = $_POST['article_title'];
     $article_content = $_POST['article_content'];
 
-    // Check if an image file was uploaded
-    if ($_FILES['article_image']['error'] === UPLOAD_ERR_OK) {
-        // Retrieve the temporary file path of the uploaded image
-        $tmp_image_path = $_FILES['article_image']['tmp_name'];
+    // Check closure date and final closure date
+    $current_date = date('Y-m-d');
+    $stmt = $pdo->prepare("SELECT closure_date, final_closure_date FROM closure_dates ORDER BY closure_date DESC LIMIT 1");
+    $stmt->execute();
+    $closure_dates = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Define the directory where the image will be stored
-        $upload_dir = 'images/';
-        // Generate a unique filename for the uploaded image
-        $image_filename = uniqid() . '_' . $_FILES['article_image']['name'];
-        // Construct the full path of the image file on the server
-        $image_path = $upload_dir . $image_filename;
+    if (!is_article_update_disabled()){
+        // Check if an image file was uploaded
+        if ($_FILES['article_image']['error'] === UPLOAD_ERR_OK) {
+            // Retrieve the temporary file path of the uploaded image
+            $tmp_image_path = $_FILES['article_image']['tmp_name'];
 
-        // Move the uploaded image to the specified directory
-        if (move_uploaded_file($tmp_image_path, $image_path)) {
-            // Image uploaded successfully, update the database with the new image path
-            $stmt = $pdo->prepare("UPDATE articles SET title = ?, content = ?, image_url = ? WHERE id = ?");
-            $stmt->execute([$article_title, $article_content, $image_path, $article_id]);
+            // Define the directory where the image will be stored
+            $upload_dir = 'images/';
+            // Generate a unique filename for the uploaded image
+            $image_filename = uniqid() . '_' . $_FILES['article_image']['name'];
+            // Construct the full path of the image file on the server
+            $image_path = $upload_dir . $image_filename;
+
+            // Move the uploaded image to the specified directory
+            if (move_uploaded_file($tmp_image_path, $image_path)) {
+                // Image uploaded successfully, update the database with the new image path
+                $stmt = $pdo->prepare("UPDATE articles SET title = ?, content = ?, image_url = ? WHERE id = ?");
+                $stmt->execute([$article_title, $article_content, $image_path, $article_id]);
+            } else {
+                // Failed to move uploaded image, handle error as needed
+                // You may display an error message or redirect back to the edit form
+            }
         } else {
-            // Failed to move uploaded image, handle error as needed
-            // You may display an error message or redirect back to the edit form
+            // No image file was uploaded, update the database without changing the image path
+            $stmt = $pdo->prepare("UPDATE articles SET title = ?, content = ? WHERE id = ?");
+            $stmt->execute([$article_title, $article_content, $article_id]);
         }
+
+        // Redirect to submission confirmation page or wherever you want
+        header('Location: submission_confirmation.php');
+        exit;
     } else {
-        // No image file was uploaded, update the database without changing the image path
-        $stmt = $pdo->prepare("UPDATE articles SET title = ?, content = ? WHERE id = ?");
-        $stmt->execute([$article_title, $article_content, $article_id]);
+        // Closure date exceeded or final closure date reached, disable article update
+        echo "Article updates are disabled.";
+        exit;
     }
 
-    // Redirect to submission confirmation page or wherever you want
-    header('Location: submission_confirmation.php');
-    exit;
+    
 }
 ?>
 

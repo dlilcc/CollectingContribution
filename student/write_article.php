@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../functions.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
@@ -13,6 +14,8 @@ if (!isset($_SESSION['user'])) {
 // $stmt -> execute([$user_id]);
 // $user_faculty = $stmt -> fetch(PDO::FETCH_ASSOC);
 // echo $user_faculty['faculty_name'];
+$day = is_article_submission_disabled();
+echo $day;
 ?>
 
 <!DOCTYPE html>
