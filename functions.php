@@ -83,4 +83,28 @@ function register_user($username, $password, $faculty) {
     $stmt->bindParam(':faculty_name', $faculty);
     return $stmt->execute();
 }
+
+// Function to check if new article submissions are disabled
+function is_article_submission_disabled() {
+    global $pdo;
+
+    $current_date = date('Y-m-d');
+    $stmt = $pdo->prepare("SELECT closure_date FROM closure_dates ORDER BY closure_date DESC LIMIT 1");
+    $stmt->execute();
+    $closure_date = $stmt->fetchColumn();
+
+    return ($closure_date && $current_date > $closure_date);
+}
+
+// Function to check if article updates are disabled
+function is_article_update_disabled() {
+    global $pdo;
+
+    $current_date = date('Y-m-d');
+    $stmt = $pdo->prepare("SELECT final_closure_date FROM closure_dates ORDER BY closure_date DESC LIMIT 1");
+    $stmt->execute();
+    $final_closure_date = $stmt->fetchColumn();
+
+    return ($final_closure_date && $current_date > $final_closure_date);
+}
 ?>

@@ -24,8 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-
-
     // Retrieve article data from the form
     $article_title = $_POST['article_title'];
     $article_content = $_POST['article_content'];
@@ -36,25 +34,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // Check closure date and final closure date
+    $current_date = date('Y-m-d');
+    $stmt = $pdo->prepare("SELECT closure_date, final_closure_date FROM closure_dates ORDER BY closure_date DESC LIMIT 1");
+    $stmt->execute();
+    $closure_dates = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    if (!is_article_submission_disabled()) {
+        // File upload handling for image
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $upload_dir = 'images/';
+            $image_name = uniqid('image_') . '_' . $_FILES['image']['name'];
+            move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $image_name);
+            $image_url = $upload_dir . $image_name;
+        } else {
+            $image_url = ''; // Set default image URL if no image uploaded
+        }
 
-    // File upload handling for image
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = 'images/';
-        $image_name = uniqid('image_') . '_' . $_FILES['image']['name'];
-        move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $image_name);
-        $image_url = $upload_dir . $image_name;
+        // Insert article into database with submission date and image URL
+        $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)");
+        $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
+
+        // Redirect to submission confirmation page
+        header('Location: submission_confirmation.php');
+        exit;
+
     } else {
-        $image_url = ''; // Set default image URL if no image uploaded
-    }
-
-    // Insert article into database with submission date and image URL
-    $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?)");
-    $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name']]);
-
-    // Redirect to submission confirmation page
-    header('Location: submission_confirmation.php');
-    exit;
+        // Closure date exceeded or final closure date reached, disable article submission
+        echo "New article submissions are disabled.";
+        exit;
+    }  
 } else {
     // Redirect to write article page if form is not submitted
     header('Location: write_article.php');

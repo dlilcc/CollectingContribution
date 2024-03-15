@@ -50,5 +50,6 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </tbody>
     </table>
+    <a href="../index.php" class="back">Back</a>
 </body>
 </html>

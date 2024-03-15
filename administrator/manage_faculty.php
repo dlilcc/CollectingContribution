@@ -72,6 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </li>
         <?php endforeach; ?>
     </ul>
-    <a href="../index.php" class="logout">Back</a>
+    <a href="../index.php" class="back">Back</a>
 </body>
 </html>
