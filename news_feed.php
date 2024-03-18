@@ -27,7 +27,7 @@ if (!$user || empty($user['faculty_name'])) {
 $user_faculty = $user['faculty_name'];
 
 // Fetch articles from the database based on the user's faculty
-$stmt = $pdo->prepare("SELECT * FROM articles WHERE faculty_name = ?");
+$stmt = $pdo->prepare("SELECT * FROM articles WHERE faculty_name = ? AND is_published = 1 ");
 $stmt->execute([$user_faculty]);
 $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>

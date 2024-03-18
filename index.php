@@ -65,7 +65,7 @@ $user = get_user($_SESSION['user']['username']);
                 <li><a href="administrator/manage_faculty.php">Manage Faculty</a></li>
             <?php endif; ?>
             <?php if (has_role('coordinator')) : ?>
-                <li><a href="coordinator_dashboard.php">Coordinator Dashboard</a></li>
+                <li><a href="marketing_coordinator/coordinator_dashboard.php">Coordinator Dashboard</a></li>
             <?php endif; ?>
             <?php if (has_role('student')) : ?>
                 <li><a href="student_dashboard.php">Student Dashboard</a></li>
@@ -74,10 +74,10 @@ $user = get_user($_SESSION['user']['username']);
                 <li><a href="student/write_article.php">Write your article</a></li>
             <?php endif; ?>
             <?php if (has_role('student')) : ?>
-                <a href="student/manage_article.php">Manage your article</a>
+                <li><a href="student/manage_article.php">Manage your article</a></li>
             <?php endif; ?>
             <?php if (has_role('student')) : ?>
-                <a href="news_feed.php">News Feed</a>
+                <li><a href="news_feed.php">News Feed</a></li>
             <?php endif; ?>
         </ul>
     </div>
