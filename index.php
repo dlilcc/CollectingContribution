@@ -25,9 +25,20 @@ $_SESSION['last_activity'] = time();
 
 // Display welcome message
 $user = get_user($_SESSION['user']['username']);
+
+$user_id = $_SESSION['user']['id'];
+
+// Fetch user's faculty information from the database
+$stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
+$stmt->execute([$user_id]);
+$user_faculty = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Fetch submitted articles from the database
+$stmt = $pdo->prepare("SELECT * FROM articles WHERE is_disabled = 0 AND is_published = 0 AND faculty_name = ?");
+$stmt->execute([$user_faculty['faculty_name']]);
+$newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<link rel="stylesheet" href="index.css" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,20 +46,47 @@ $user = get_user($_SESSION['user']['username']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Magazine</title>
-    <style>
-        .logout {
-            float: right;
-            margin-top: 1px;
-            font-size: 30px;
-            font-family: 'verdana';
-        }
-    </style>
+
+    <link rel="stylesheet" href="css/index.css" />
+
 </head>
 <body>
-    <div>
+    <div class="header">
         <h1>Welcome To University Magazine, <?php echo $user['username']; ?>!</h1>
-        <a href="logout.php" class="logout">Logout</a>
+        <!-- Bell icon and notification count -->
+        <?php if (has_role('coordinator')) : ?>
+            <div class="notification-container">
+
+                <!-- Notification Bell -->
+                <div class="notification-bell" id="notificationBell">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationCount"><?php echo count($newArticles); ?></span>
+                </div>
+                <!-- End Notification Bell -->
+
+                <!-- Display new article submissions -->
+                <div class="notification-box" id="notificationBox">
+                    <?php if (empty($newArticles)): ?>
+                        <p>No new article submissions</p>
+                    <?php else: ?>
+                        <ul>
+                            <?php foreach ($newArticles as $article): ?>
+                                <li>
+                                    <a href="student/view_article.php?id=<?php echo $article['id']; ?>"><?php echo $article['title']; ?></a>
+                                    <!-- Display other details of the article as needed -->
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </div>
+                <!-- End Display new article submissions -->
+
+            </div>
+        <?php endif; ?>
     </div>
+
+    <a href="logout.php" class="logout">Logout</a>
+
     <div>
         <h2>Dashboard</h2>
         <ul>
@@ -81,5 +119,20 @@ $user = get_user($_SESSION['user']['username']);
             <?php endif; ?>
         </ul>
     </div>
+
+    <script>
+        // JavaScript to toggle the visibility of new article submissions when clicking on the bell icon
+        document.addEventListener('DOMContentLoaded', function() {
+            const bell = document.getElementById('notificationBell');
+            const box = document.getElementById('notificationBox');
+
+            bell.addEventListener('click', function() {
+                box.classList.toggle('open');
+            });
+        });
+
+        
+    </script>
+
 </body>
 </html>
