@@ -13,10 +13,9 @@ require_once __DIR__ . '/../includes/config.php';
 
 // Fetch articles for the logged-in user
 $user_id = $_SESSION['user']['id'];
-$stmt = $pdo->prepare("SELECT id, title FROM articles WHERE user_id = ?");
+$stmt = $pdo->prepare("SELECT id, title, is_disabled, is_published FROM articles WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -37,16 +36,30 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </thead>
         <tbody>
             <?php foreach ($articles as $article): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($article['title']); ?></td>
-                    <td>
-                        <a href="view_article.php?id=<?php echo $article['id']; ?>">View</a>
-                        <a href="edit_article.php?id=<?php echo $article['id']; ?>">Edit</a>
-                        <a href="delete_article.php?id=<?php echo $article['id']; ?>">Delete</a>
-                        <a href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
+                <?php if($article['is_disabled'] == 1 && $article['is_published'] == 0) : ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($article['title']); ?></td>
+                        <td>
+                            <a href="view_article.php?id=<?php echo $article['id']; ?>">View</a>
+                            <a href="delete_article.php?id=<?php echo $article['id']; ?>">Delete</a>
+                            <a href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
+                            <t >Rejected</t>
+                        </td>
+                    </tr>
+                <?php endif; ?>
 
-                    </td>
-                </tr>
+                <?php if($article['is_published'] == 1 && $article['is_disabled'] == 0) : ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($article['title']); ?></td>
+                        <td>
+                            <a href="view_article.php?id=<?php echo $article['id']; ?>">View</a>
+                            <a href="delete_article.php?id=<?php echo $article['id']; ?>">Delete</a>
+                            <a href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
+                            <t>Approve</t>
+
+                        </td>
+                    </tr>
+                <?php endif; ?>
             <?php endforeach; ?>
         </tbody>
     </table>

@@ -34,8 +34,7 @@ echo $day;
         <input type="text" id="article_title" name="article_title" required><br><br>
         <label for="article_content">Article Content:</label><br>
         <!-- Include textarea for CKEditor -->
-        <textarea id="article_content" name="article_content" required></textarea>
-        <br><br>
+        <textarea id="article_content" name="article_content" required></textarea><br><br>
         <!-- Include file input for image upload -->
         <label for="image">Article Image:</label><br>
         <input type="file" id="image" name="image"><br><br>
