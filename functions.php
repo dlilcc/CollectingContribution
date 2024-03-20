@@ -28,9 +28,6 @@ function get_user($username) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// // Include database configuration
-require_once 'includes/config.php';
-
 // Function to retrieve list of faculties from the database
 function get_faculties() {
     global $pdo;

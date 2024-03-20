@@ -34,6 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // Fetch user's email information from the database
+    $stmt = $pdo->prepare("SELECT email FROM users WHERE role = 'coordinator'");
+    $stmt->execute();
+    $user_email = $stmt->fetch(PDO::FETCH_ASSOC);
+
     // Check closure date and final closure date
     $current_date = date('Y-m-d');
     $stmt = $pdo->prepare("SELECT closure_date, final_closure_date FROM closure_dates ORDER BY closure_date DESC LIMIT 1");
@@ -54,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Insert article into database with submission date and image URL
         $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)");
         $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
-
+        
         // Redirect to submission confirmation page
         header('Location: submission_confirmation.php');
         exit;

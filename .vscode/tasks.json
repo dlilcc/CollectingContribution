@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "reject_pending_articles",
+            "type": "shell",
+            "command": "php",
+            "args": [
+                "C:/xampp/htdocs/CollectingContribution/marketing_coordinator/reject_pending_articles.php"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        }
+    ]
+}
