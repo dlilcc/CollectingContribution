@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-// Include necessary files
+// Include necessary files(ads)
+
 require_once 'functions.php';
 
 // Check if the user is logged in
