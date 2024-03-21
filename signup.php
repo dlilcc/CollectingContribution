@@ -5,10 +5,10 @@ session_start();
 require_once 'functions.php';
 
 // Check if the user is already logged in, redirect to index.php
-if (is_logged_in()) {
-    header('Location: index.php');
-    exit;
-}
+// if (is_logged_in()) {
+//     header('Location: index.php');
+//     exit;
+// }
 
 // Initialize variables
 $username = '';
