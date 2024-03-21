@@ -26,11 +26,11 @@ $_SESSION['last_activity'] = time();
 // Display welcome message
 $user = get_user($_SESSION['user']['username']);
 
-$user_id = $_SESSION['user']['id'];
+// $user_id = $_SESSION['user']['id'];
 
 // Fetch user's faculty information from the database
-$stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
-$stmt->execute([$user_id]);
+$stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE username = ?");
+$stmt->execute([$user['username']]);
 $user_faculty = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Fetch submitted articles from the database
