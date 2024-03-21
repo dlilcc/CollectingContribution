@@ -92,13 +92,13 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Dashboard</h2>
         <ul>
             <?php if (has_role('admin')) : ?>
-                <a href="admin_dashboard.php">Admin Dashboard</a>
+                <li><a href="admin_dashboard.php">Admin Dashboard</a></li>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
-                <a href="administrator/manage_user.php">Manage User</a>
+                <li><a href="administrator/manage_user.php">Manage User</a></li>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
-                <a href="administrator/manage_closure_dates.php">Manage Closure Dates</a>
+                <li><a href="administrator/manage_closure_dates.php">Manage Closure Dates</a></li>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
                 <li><a href="administrator/manage_faculty.php">Manage Faculty</a></li>
