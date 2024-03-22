@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require_once 'send_mail.php';
+
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
     // Redirect to login page if not logged in
@@ -45,6 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $closure_dates = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    $email = "vnguyenduylinh@gmail.com";
+    $title = "new submittion";
+    $message = "you have new submittion";
+
     if (!is_article_submission_disabled()) {
         // File upload handling for image
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -60,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)");
         $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
         
+        sendMail($email, $title, $message);
+
         // Redirect to submission confirmation page
         header('Location: submission_confirmation.php');
         exit;
