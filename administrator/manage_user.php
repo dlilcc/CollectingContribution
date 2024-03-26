@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<link rel="stylesheet" href="manage_user.css" />
+<link rel="stylesheet" href="../css/manage_user.css" />
 
 <!DOCTYPE html>
 <html lang="en">
