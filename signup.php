@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $selected_faculty = $_POST['faculty'];
+    $email = $_POST['email'];
 
     // Validate form data
     if (empty($username) || empty($password) || empty($confirm_password)) {
@@ -36,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Username already exists. Please choose a different username.';
         } else {
             // Register new user
-            if (register_user($username, $password, $selected_faculty)) {
+            if (register_user($username, $password, $selected_faculty, $email)) {
                 // Redirect to login page after successful registration
                 header('Location: login.php?registered=true');
                 exit;
@@ -109,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="<?php echo htmlentities($faculty['faculty_name']); ?>"><?php echo htmlentities($faculty['faculty_name']); ?></option>
             <?php endforeach; ?>
         </select>
+        <input type="text" name="email" placeholder="Email" required>
         <button type="submit">Sign Up</button>
     </form>
     <div class="login-link">

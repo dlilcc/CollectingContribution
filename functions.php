@@ -67,17 +67,18 @@ function username_exists($username) {
 
 
 // Function to register a new user
-function register_user($username, $password, $faculty) {
+function register_user($username, $password, $faculty, $email) {
     global $pdo;
     
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $role = 'student'; // Default role for new users
     
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, role, faculty_name) VALUES (:username, :password, :role, :faculty_name)");
+    $stmt = $pdo->prepare("INSERT INTO users (username, password, role, faculty_name, email) VALUES (:username, :password, :role, :faculty_name, :email)");
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':password', $hashed_password);
     $stmt->bindParam(':role', $role);
     $stmt->bindParam(':faculty_name', $faculty);
+    $stmt->bindParam(':email', $email);
     return $stmt->execute();
 }
 

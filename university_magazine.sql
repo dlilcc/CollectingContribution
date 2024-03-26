@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2024 at 04:11 AM
+-- Generation Time: Mar 26, 2024 at 02:23 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -65,7 +65,12 @@ INSERT INTO `articles` (`id`, `user_id`, `title`, `content`, `image_url`, `submi
 (54, 6, 'bbbb', '<p>b</p>\r\n', '', '2024-03-19 13:10:42', '2024-03-19', '2024-03-20', 1, 0, 0, 'Art'),
 (55, 6, 'ccc', '<p>c</p>\r\n', 'images/image_65f98edbcddfc_CyberPunk2077.jpg', '2024-02-01 13:10:51', '2024-03-19', '2024-03-20', 1, 0, 0, 'Art'),
 (56, 6, 'test', '<p>a</p>\r\n', '', '2024-03-21 02:24:20', '2024-03-22', '2024-03-31', 0, 0, 0, 'Art'),
-(57, 6, 'article 1', '<p>aa</p>\r\n', '', '2024-03-21 02:25:39', '2024-03-22', '2024-03-31', 0, 1, 0, 'Art');
+(57, 6, 'article 1', '<p>aa</p>\r\n', '', '2024-03-21 02:25:39', '2024-03-22', '2024-03-31', 0, 1, 0, 'Art'),
+(58, 7, 'hahahahaha', '<p>aa</p>\r\n', 'images/image_65fba6a3d7926_coffee_in_rain_by_kirokaze_d98qb8z.gif', '2024-03-21 03:16:51', '2024-03-22', '2024-03-31', 0, 1, 0, 'Science'),
+(59, 6, 'tttt', '<p>aaaa</p>\r\n', '', '2024-03-22 12:31:07', '2024-03-22', '2024-03-31', 0, 0, 0, 'Art'),
+(60, 6, 'tttt', '<p>aaaa</p>\r\n', '', '2024-03-22 12:32:10', '2024-03-22', '2024-03-31', 0, 0, 0, 'Art'),
+(61, 6, 'ghghghg', '<p>hghgh</p>\r\n', '', '2024-03-22 12:35:29', '2024-03-22', '2024-03-31', 0, 0, 0, 'Art'),
+(62, 6, 'ghghghg', '<p>hghgh</p>\r\n', '', '2024-03-22 12:36:59', '2024-03-22', '2024-03-31', 0, 0, 0, 'Art');
 
 -- --------------------------------------------------------
 
@@ -110,7 +115,8 @@ INSERT INTO `comments` (`id`, `article_id`, `coordinator_id`, `comment_text`, `c
 (1, 41, 1, 'haha', '2024-03-18 12:22:44'),
 (2, 49, 1, 'that funny lol', '2024-03-18 12:35:55'),
 (3, 43, 1, 'haha', '2024-03-21 02:29:36'),
-(4, 57, 1, 'haha', '2024-03-21 02:29:53');
+(4, 57, 1, 'haha', '2024-03-21 02:29:53'),
+(5, 58, 5, 'hoho', '2024-03-21 03:18:15');
 
 -- --------------------------------------------------------
 
@@ -152,12 +158,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `faculty_name`, `email`) VALUES
-(1, 'linhproht', '$2y$10$yX98XDEzpP/ZZEFrq224w.4U0Re1PBPehdI4HXsT0mufCNgAkejVy', 'coordinator', 'Art', 'dlilcc718@gmail.com'),
+(1, 'linhproht', '$2y$10$yX98XDEzpP/ZZEFrq224w.4U0Re1PBPehdI4HXsT0mufCNgAkejVy', 'coordinator', 'Art', 'vnguyenduylinh@gmail.com'),
 (3, 'guest', '$2y$10$7666ZLNhPYTp08lBvKDgA.bgRVtEbSuIxy4NL2DEVmLij9Injw9Bm', 'guest', NULL, ''),
 (4, 'admin', '$2y$10$QaU9qF7pLg6IXvWGLRBc3uAk65Rg.JUJrDtRq3jtoeSPYstRyBkHO', 'admin', NULL, ''),
-(5, 'linhproht2', '$2y$10$FJrNhDgNel2YyM145sXnLu7kYcaC1vmL9HHALsxzviqKYYE148bxe', 'student', 'Muisc', ''),
+(5, 'linhproht2', '$2y$10$FJrNhDgNel2YyM145sXnLu7kYcaC1vmL9HHALsxzviqKYYE148bxe', 'coordinator', 'Science', ''),
 (6, 'linhproht3', '$2y$10$bDw7rxsbW0nDtOYpjr4LXuNj9uOwDCiGi5ziRqv96.Yop.5B.Z3D6', 'student', 'Art', 'dlilcc718@gmail.com'),
-(7, 'linhproht4', '$2y$10$CmrudsI13UV.j.L6cJw16.ju6W3PpnUqlbQcngYEyxHNSU1DeTGAG', 'student', 'Science', '');
+(7, 'linhproht4', '$2y$10$CmrudsI13UV.j.L6cJw16.ju6W3PpnUqlbQcngYEyxHNSU1DeTGAG', 'student', 'Science', ''),
+(8, 'linhproht5', '$2y$10$orXfCX6e1CjNtBgfIbfQw.i26qNSu/tvtwNXCk4QSsYKRAbTXysIO', 'student', 'Muisc', 'vnguyenduylinh123@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -205,7 +212,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `closure_dates`
@@ -217,13 +224,13 @@ ALTER TABLE `closure_dates`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
