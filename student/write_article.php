@@ -14,8 +14,8 @@ if (!is_logged_in()) {
 // $stmt -> execute([$user_id]);
 // $user_faculty = $stmt -> fetch(PDO::FETCH_ASSOC);
 // echo $user_faculty['faculty_name'];
-$day = is_article_submission_disabled();
-echo $day;
+// $day = is_article_submission_disabled();
+// echo $day;
 ?>
 
 <!DOCTYPE html>

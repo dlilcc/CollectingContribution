@@ -36,10 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // Fetch user's name information from the database
+    $stmt = $pdo->prepare("SELECT username FROM users WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $username = $stmt->fetch(PDO::FETCH_ASSOC);
+
     // Fetch user's email information from the database
-    $stmt = $pdo->prepare("SELECT email FROM users WHERE role = 'coordinator'");
-    $stmt->execute();
+    $stmt = $pdo->prepare("SELECT email FROM users WHERE role = 'coordinator' AND faculty_name = ?");
+    $stmt->execute([$user['faculty_name']]);
     $user_email = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user_email = implode(', ', $user_email);
 
     // Check closure date and final closure date
     $current_date = date('Y-m-d');
@@ -47,9 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute();
     $closure_dates = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $email = "vnguyenduylinh@gmail.com";
     $title = "new submittion";
-    $message = "you have new submittion";
+    $message = implode(', ', $username) . " has submitted new article";
+
 
     if (!is_article_submission_disabled()) {
         // File upload handling for image
@@ -67,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
         
         // Sending notification for the Coordinator 
-        sendMail($email, $title, $message);
+        sendMail($user_email, $title, $message);
 
         // Redirect to submission confirmation page
         header('Location: submission_confirmation.php');
