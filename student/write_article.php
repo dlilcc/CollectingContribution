@@ -36,6 +36,10 @@ if (!is_logged_in()) {
 
         <!-- Include textarea for CKEditor -->
         <textarea id="article_content" name="article_content" required></textarea><br><br>
+
+        <!-- Include file uploading -->
+        <label for="document">Upload Word Document:</label>
+        <input type="file" id="document" name="document"><br><br>
         
         <!-- Include file input for image upload -->
         <label for="image">Article Image:</label><br>

@@ -68,12 +68,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $image_url = ''; // Set default image URL if no image uploaded
         }
 
+        // Handle uploaded file
+        $document = $_FILES['document'];
+        $documentName = $document['name'];
+        $documentTmpName = $document['tmp_name'];
+
+        // Validate file type
+        $fileType = pathinfo($documentName, PATHINFO_EXTENSION);
+        if ($fileType !== 'doc') {
+            echo "Error: Only Word documents (docx) are allowed.";
+            exit;
+        }
+
+        // Move uploaded file to desired location
+        $uploadDir = '../uploads/';
+        $uploadPath = $uploadDir . $documentName;
+        if (!move_uploaded_file($documentTmpName, $uploadPath)) {
+            echo "Error: Failed to upload document.";
+            exit;
+        }
+        
         // Insert article into database with submission date and image URL
         $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)");
         $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
         
         // Sending notification for the Coordinator 
-        sendMail($user_email, $title, $message);
+        //sendMail($user_email, $title, $message);
 
         // Redirect to submission confirmation page
         header('Location: submission_confirmation.php');
