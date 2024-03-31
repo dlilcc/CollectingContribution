@@ -109,6 +109,12 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if (has_role('coordinator')) : ?>
                 <li><a href="marketing_coordinator/coordinator_dashboard.php">Coordinator Dashboard</a></li>
             <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li><a href="marketing_manager/manager.php">Manager Dashboard</a></li>
+            <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li><a href="news_feed.php">News Feed</a></li>
+            <?php endif; ?>
             <?php if (has_role('student')) : ?>
                 <a href="student_dashboard.php">Student Dashboard</a>
             <?php endif; ?>

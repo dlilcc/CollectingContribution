@@ -59,6 +59,9 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Image">
                 <?php endif; ?>
                 <p><a href="student/view_article.php?id=<?php echo $article['id']; ?>">Read more</a></p>
+                <?php if (has_role('manager')) : ?>
+                <li><a href="marketing_manager/manager.php?id=<?php echo $article['id']; ?>">Manager controll</a></li>
+            <?php endif; ?>
             </div>
             <hr>
         <?php endforeach; ?>
