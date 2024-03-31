@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = "new submittion";
     $message = implode(', ', $username) . " has submitted new article";
 
-
+    // Ensure article submission is not disabled
     if (!is_article_submission_disabled()) {
         // File upload handling for image
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -75,39 +75,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Validate file type
         $fileType = pathinfo($documentName, PATHINFO_EXTENSION);
-        if ($fileType !== 'doc') {
-            echo "Error: Only Word documents (docx) are allowed.";
+
+        if ($fileType === "") {
+            $documentName = "";
+        } elseif ($fileType !== 'doc') {
+            $_SESSION['error'] = "Error: Only Word documents (doc) are allowed.";
+            header('Location: write_article.php');
             exit;
+        } else {
+            // Move uploaded file to desired location
+            $uploadDir = '../uploads/';
+            $uploadPath = $uploadDir . $documentName;
+            if (!move_uploaded_file($documentTmpName, $uploadPath)) {
+                $_SESSION['error'] = "Error: Failed to upload document.";
+                header('Location: write_article.php');
+                exit;
+            }
         }
 
-        // Move uploaded file to desired location
-        $uploadDir = '../uploads/';
-        $uploadPath = $uploadDir . $documentName;
-        if (!move_uploaded_file($documentTmpName, $uploadPath)) {
-            echo "Error: Failed to upload document.";
-            exit;
-        }
-        
         // Insert article into database with submission date and image URL
-        $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)");
-        $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
-        
-        // Sending notification for the Coordinator 
-        //sendMail($user_email, $title, $message);
-
-        // Redirect to submission confirmation page
-        header('Location: submission_confirmation.php');
-        exit;
-
+        try {
+            $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)");
+            $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
+            
+            // Sending notification for the Coordinator 
+            sendMail($user_email, $title, $message);
+            
+            // Redirect to submission confirmation page
+            header('Location: submission_confirmation.php');
+            exit;
+        } catch (PDOException $e) {
+            $_SESSION['error'] = "Error: " . $e->getMessage();
+            header('Location: write_article.php');
+            exit;
+        }
     } else {
         // Closure date exceeded or final closure date reached, disable article submission
-        echo "New article submissions are disabled.";
+        $_SESSION['error'] = "New article submissions are disabled.";
+        header('Location: write_article.php');
         exit;
-    }  
+    }
 } else {
     // Redirect to write article page if form is not submitted
     header('Location: write_article.php');
     exit;
 }
 ?>
-
