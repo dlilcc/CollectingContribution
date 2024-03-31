@@ -87,4 +87,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_report'])) {
         ?>
     </select>
     <button type="submit" name="generate_report">Generate Report</button>
+    <a href="../index.php" class="back">Back</a>
 </form>

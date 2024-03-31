@@ -87,5 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <button type="submit">Save Changes</button>
     </form>
+    <a href="../index.php" class="back">Back</a>
 </body>
 </html>

@@ -4,6 +4,7 @@ session_start();
 // Include necessary files
 require_once 'functions.php';
 
+
 // Check if the user is logged in
 if (!is_logged_in()) {
     header('Location: login.php');
@@ -60,8 +61,15 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endif; ?>
                 <p><a href="student/view_article.php?id=<?php echo $article['id']; ?>">Read more</a></p>
                 <?php if (has_role('manager')) : ?>
-                <li><a href="marketing_manager/manager.php?id=<?php echo $article['id']; ?>">Manager controll</a></li>
-            <?php endif; ?>
+                <li><a href="marketing_manager/manager.php?id=<?php echo $article['id']; ?>">Manager control</a></li>
+                <?php endif; ?>
+
+                <?php
+                if (is_article_update_disabled() && has_role('manager')) {
+                    echo '<a href="marketing_manager/manager.php?id=' . $article['id'] . '&action=download_zip">Download ZIP</a>';
+                }
+                ?>
+                
             </div>
             <hr>
         <?php endforeach; ?>
@@ -69,4 +77,5 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="index.php" class="back">Back</a>
 </body>
 </html>
+
 

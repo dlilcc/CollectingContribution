@@ -69,6 +69,7 @@ if (!is_logged_in()) {
             }
         });
     </script>
+    <a href="../index.php" class="back">Back</a>
 </body>
 </html>
 

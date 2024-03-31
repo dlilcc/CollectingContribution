@@ -45,7 +45,7 @@ if(isset($_GET['id'])) {
 }
 
 // Check if form is submitted to download selected contribution as ZIP
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_zip'])) {
+if ($_GET['action'] === 'download_zip') {
 
     // Convert article content to Word document
     $phpWord = new \PhpOffice\PhpWord\PhpWord();
@@ -90,39 +90,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['download_zip'])) {
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selected Contribution</title>
-</head>
-<body>
-    <h1>Selected Contribution</h1>
-    <?php if (empty($article)) : ?>
-        <p>No selected contribution available.</p>
-    <?php else : ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Content</th>
-                    <!-- Add more columns as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><?= $article['title'] ?></td>
-                    <td><?= $article['content'] ?></td>
-                    <!-- Add more cells as needed -->
-                </tr>
-            </tbody>
-        </table>
-        <!-- Form to download selected contribution as ZIP -->
-        <form method="post">
-            <button type="submit" name="download_zip">Download Selected Contribution as ZIP</button>
-        </form>
-    <?php endif; ?>
-</body>
-</html>
