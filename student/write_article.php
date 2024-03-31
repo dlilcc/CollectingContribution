@@ -39,10 +39,10 @@ if (!is_logged_in()) {
 
         <!-- Include file uploading -->
         <label for="document">Upload Word Document:</label>
-        <input type="file" id="document" name="document"><br><br>
+        <input type="file" name="document"><br><br>
         
         <!-- Include file input for image upload -->
-        <label for="image">Article Image:</label><br>
+        <label for="image">Article Image:</label>
         <input type="file" id="image" name="image"><br><br>
         <form method="post" enctype="multipart/form-data">
             <!-- Other form fields -->
