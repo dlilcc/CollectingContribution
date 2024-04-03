@@ -105,4 +105,48 @@ function is_article_update_disabled() {
 
     return ($final_closure_date && $current_date > $final_closure_date);
 }
+
+// Function to generate report: Number of contributions per faculty or user
+function generateContributionsReport($reportType, $selectedYear) {
+    global $pdo;
+    
+    // Define the SQL query based on the report type
+    switch ($reportType) {
+        case 'contributions_per_faculty':
+            // SQL query to count contributions per faculty for the selected year
+            $sql = "SELECT faculty_name, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
+            break;
+        case 'contributions_per_user':
+            // SQL query to count contributions per user for the selected year
+            $sql = "SELECT user_id, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY user_id";
+            break;
+        case 'percentage_contributions_per_faculty':
+            // SQL query to calculate the percentage of contributions by each faculty for the selected year
+            $sql = "SELECT faculty_name, COUNT(*) AS num_contributions, ROUND((COUNT(*) / (SELECT COUNT(*) FROM articles WHERE YEAR(submission_date) = :year)) * 100, 2) AS contribution_percentage FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
+            break;
+        case 'contributors_per_faculty':
+            // SQL query to count the number of unique contributors within each faculty for the selected year
+            $sql = "SELECT faculty_name, COUNT(DISTINCT user_id) AS num_contributors FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
+            break;
+        default:
+            // Return an empty array for unknown report types
+            return [];
+    }
+    
+    try {
+        // Prepare the query
+        $stmt = $pdo->prepare($sql);
+        // Bind the year parameter
+        $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+        // Execute the query
+        $stmt->execute();
+        // Fetch the results as an associative array
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Handle database error
+        echo "Error: " . $e->getMessage();
+        // Return an empty array in case of error
+        return [];
+    }
+}
 ?>
