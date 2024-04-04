@@ -109,24 +109,28 @@ function is_article_update_disabled() {
 // Function to generate report: Number of contributions per faculty or user
 function generateContributionsReport($reportType, $selectedYear) {
     global $pdo;
+    global $chartValue;
+    global $chartType;
     
     // Define the SQL query based on the report type
     switch ($reportType) {
         case 'contributions_per_faculty':
             // SQL query to count contributions per faculty for the selected year
             $sql = "SELECT faculty_name, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
+            $chartValue = 'faculty_name';
+            $chartType = 'column';
             break;
         case 'contributions_per_user':
             // SQL query to count contributions per user for the selected year
             $sql = "SELECT user_id, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY user_id";
+            $chartValue = 'user_id';
+            $chartType = 'column';
             break;
         case 'percentage_contributions_per_faculty':
             // SQL query to calculate the percentage of contributions by each faculty for the selected year
             $sql = "SELECT faculty_name, COUNT(*) AS num_contributions, ROUND((COUNT(*) / (SELECT COUNT(*) FROM articles WHERE YEAR(submission_date) = :year)) * 100, 2) AS contribution_percentage FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
-            break;
-        case 'contributors_per_faculty':
-            // SQL query to count the number of unique contributors within each faculty for the selected year
-            $sql = "SELECT faculty_name, COUNT(DISTINCT user_id) AS num_contributors FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
+            $chartValue = 'faculty_name';
+            $chartType = 'pie';
             break;
         default:
             // Return an empty array for unknown report types
