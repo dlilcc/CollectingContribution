@@ -5,10 +5,10 @@ session_start();
 require_once 'functions.php';
 
 // Check if the user is already logged in, redirect to index.php
-if (is_logged_in()) {
-    header('Location: index.php');
-    exit;
-}
+// if (is_logged_in()) {
+//     header('Location: index.php');
+//     exit;
+// }
 
 // Initialize variables
 $username = '';
@@ -24,21 +24,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $selected_faculty = $_POST['faculty'];
+    $email = $_POST['email'];
 
-    // Validate form data
-    if (empty($username) || empty($password) || empty($confirm_password)) {
+     // Validate form data
+     if (empty($username) || empty($password) || empty($confirm_password) || empty($selected_faculty) || empty($email)) {
         $error = 'Please fill in all fields.';
     } elseif ($password !== $confirm_password) {
         $error = 'Passwords do not match.';
+    } elseif (!validatePassword($password)) {
+        $error = 'Password must be at least 8 characters long and contain at least one uppercase letter and one digit.';
     } else {
         // Check if username already exists
         if (username_exists($username)) {
             $error = 'Username already exists. Please choose a different username.';
         } else {
             // Register new user
-            if (register_user($username, $password, $selected_faculty)) {
+            if (register_user($username, $password, $selected_faculty, $email)) {
                 // Redirect to login page after successful registration
-                header('Location: login.php?registered=true');
+                echo 
+                "<script>
+                    alert('You are register successfully');
+                    window.location.href = 'login.php';
+                </script>";
                 exit;
             } else {
                 $error = 'Error registering user. Please try again later.';
@@ -109,6 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="<?php echo htmlentities($faculty['faculty_name']); ?>"><?php echo htmlentities($faculty['faculty_name']); ?></option>
             <?php endforeach; ?>
         </select>
+        <input type="text" name="email" placeholder="Email" required>
         <button type="submit">Sign Up</button>
     </form>
     <div class="login-link">

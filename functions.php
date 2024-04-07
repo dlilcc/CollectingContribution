@@ -67,18 +67,39 @@ function username_exists($username) {
 
 
 // Function to register a new user
-function register_user($username, $password, $faculty) {
+function register_user($username, $password, $faculty, $email) {
     global $pdo;
     
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $role = 'student'; // Default role for new users
     
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, role, faculty_name) VALUES (:username, :password, :role, :faculty_name)");
+    $stmt = $pdo->prepare("INSERT INTO users (username, password, role, faculty_name, email) VALUES (:username, :password, :role, :faculty_name, :email)");
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':password', $hashed_password);
     $stmt->bindParam(':role', $role);
     $stmt->bindParam(':faculty_name', $faculty);
+    $stmt->bindParam(':email', $email);
     return $stmt->execute();
+}
+
+function validatePassword($password) {
+    // Check if password is at least 8 characters long
+    if (strlen($password) < 8) {
+        return false;
+    }
+
+    // Check if password contains at least one uppercase letter
+    if (!preg_match('/[A-Z]/', $password)) {
+        return false;
+    }
+
+    // Check if password contains at least one digit
+    if (!preg_match('/\d/', $password)) {
+        return false;
+    }
+
+    // All conditions passed, password is valid
+    return true;
 }
 
 // Function to check if new article submissions are disabled
@@ -103,5 +124,53 @@ function is_article_update_disabled() {
     $final_closure_date = $stmt->fetchColumn();
 
     return ($final_closure_date && $current_date > $final_closure_date);
+}
+
+// Function to generate report: Number of contributions per faculty or user
+function generateContributionsReport($reportType, $selectedYear) {
+    global $pdo;
+    global $chartValue;
+    global $chartType;
+    
+    // Define the SQL query based on the report type
+    switch ($reportType) {
+        case 'contributions_per_faculty':
+            // SQL query to count contributions per faculty for the selected year
+            $sql = "SELECT faculty_name, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
+            $chartValue = 'faculty_name';
+            $chartType = 'column';
+            break;
+        case 'contributions_per_user':
+            // SQL query to count contributions per user for the selected year
+            $sql = "SELECT user_id, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY user_id";
+            $chartValue = 'user_id';
+            $chartType = 'column';
+            break;
+        case 'percentage_contributions_per_faculty':
+            // SQL query to calculate the percentage of contributions by each faculty for the selected year
+            $sql = "SELECT faculty_name, COUNT(*) AS num_contributions, ROUND((COUNT(*) / (SELECT COUNT(*) FROM articles WHERE YEAR(submission_date) = :year)) * 100, 2) AS contribution_percentage FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
+            $chartValue = 'faculty_name';
+            $chartType = 'pie';
+            break;
+        default:
+            // Return an empty array for unknown report types
+            return [];
+    }
+    
+    try {
+        // Prepare the query
+        $stmt = $pdo->prepare($sql);
+        // Bind the year parameter
+        $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+        // Execute the query
+        $stmt->execute();
+        // Fetch the results as an associative array
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Handle database error
+        echo "Error: " . $e->getMessage();
+        // Return an empty array in case of error
+        return [];
+    }
 }
 ?>

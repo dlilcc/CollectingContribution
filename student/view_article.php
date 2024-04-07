@@ -83,5 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
         <button type="submit" name="submit_comment">Submit Comment</button>
     </form>
     <?php endif; ?>
+    <a href="../index.php" class="back">Back</a>
 </body>
 </html>

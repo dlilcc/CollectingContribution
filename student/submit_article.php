@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require_once 'send_mail.php';
+
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
     // Redirect to login page if not logged in
@@ -25,54 +27,100 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Retrieve article data from the form
-    $article_title = $_POST['article_title'];
-    $article_content = $_POST['article_content'];
-    $user_id = $_SESSION['user']['id']; // Assuming user ID is stored in the session
+    $articleTitle = $_POST['article_title'];
+    $articleContent = $_POST['article_content'];
+    $userId = $_SESSION['user']['id']; // Assuming user ID is stored in the session
 
-    // Fetch user's faculty information from the database
-    $stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
-    $stmt->execute([$user_id]);
+    // Fetch user's information from the database
+    $stmt = $pdo->prepare("SELECT username, email, faculty_name FROM users WHERE id = ?");
+    $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $username = $user['username'];
+    $facultyName = $user['faculty_name'];
 
-    // Fetch user's email information from the database
-    $stmt = $pdo->prepare("SELECT email FROM users WHERE role = 'coordinator'");
-    $stmt->execute();
-    $user_email = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Fetch coordinator's email from the database
+    $stmt = $pdo->prepare("SELECT email FROM users WHERE faculty_name = ? AND role = 'coordinator'");
+    $stmt->execute([$facultyName]);
+    $userEmail = $stmt->fetch(PDO::FETCH_ASSOC);
+    $userEmail = implode(', ', $userEmail);
 
     // Check closure date and final closure date
-    $current_date = date('Y-m-d');
+    $currentDate = date('Y-m-d');
     $stmt = $pdo->prepare("SELECT closure_date, final_closure_date FROM closure_dates ORDER BY closure_date DESC LIMIT 1");
     $stmt->execute();
-    $closure_dates = $stmt->fetch(PDO::FETCH_ASSOC);
+    $closureDates = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    $title = "New Submission";
+    $message = "{$username} has submitted a new article";
+
+    // Ensure article submission is not disabled
     if (!is_article_submission_disabled()) {
         // File upload handling for image
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = 'images/';
-            $image_name = uniqid('image_') . '_' . $_FILES['image']['name'];
-            move_uploaded_file($_FILES['image']['tmp_name'], $upload_dir . $image_name);
-            $image_url = $upload_dir . $image_name;
+            $uploadDir = 'images/';
+            $imageName = uniqid('image_') . '_' . $_FILES['image']['name'];
+            $imageUrl = $uploadDir . $imageName;
+            move_uploaded_file($_FILES['image']['tmp_name'], $imageUrl);
         } else {
-            $image_url = ''; // Set default image URL if no image uploaded
+            $imageUrl = ''; // Set default image URL if no image uploaded
         }
 
-        // Insert article into database with submission date and image URL
-        $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, ?)");
-        $stmt->execute([$article_title, $article_content, $image_url, $user_id, $user['faculty_name'], $closure_dates['closure_date'], $closure_dates['final_closure_date']]);
-        
-        // Redirect to submission confirmation page
-        header('Location: submission_confirmation.php');
-        exit;
+        // Handle uploaded document
+        $document = $_FILES['document'];
+        $documentName = $document['name'];
+        $documentTmpName = $document['tmp_name'];
 
+        // Check if the file is null
+        if ($documentName !== '') {
+            // Validate file extension
+            $fileExtension = pathinfo($documentName, PATHINFO_EXTENSION);
+            $allowedExtensions = array('doc', 'docx');
+            if (!in_array(strtolower($fileExtension), $allowedExtensions)) {
+                echo "<script>
+                    alert('Only Word documents (DOC/DOCX) are allowed.');
+                    window.location.href = 'write_article.php'
+                </script>";
+                exit;
+            } else {
+                // Move uploaded file to desired location
+                $uploadDir = '../uploads/';
+                $uploadPath = $uploadDir . $documentName;
+                if (!move_uploaded_file($documentTmpName, $uploadPath)) {
+                    $_SESSION['error'] = "Error: Failed to upload document.";
+                    header('Location: write_article.php');
+                    exit;
+                }
+            }
+        }
+
+
+
+        // Insert article into database with submission date, image URL, and file name
+        try {
+            $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date, file_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$articleTitle, $articleContent, $imageUrl, $userId, $currentDate, $facultyName, $closureDates['closure_date'], $closureDates['final_closure_date'], $documentName]);
+            
+            // Sending notification for the Coordinator 
+            //sendMail($userEmail, $title, $message);
+            
+            // Redirect to submission confirmation page
+            header('Location: submission_confirmation.php');
+            exit;
+        } catch (PDOException $e) {
+            $_SESSION['error'] = "Error: " . $e->getMessage();
+            header('Location: write_article.php');
+            exit;
+        }
     } else {
         // Closure date exceeded or final closure date reached, disable article submission
-        echo "New article submissions are disabled.";
-        exit;
-    }  
+        echo "<script>
+            alert('New article submissions are disabled.');
+            window.location.href = 'write_article.php'
+        </script>";
+    }
 } else {
     // Redirect to write article page if form is not submitted
     header('Location: write_article.php');
     exit;
 }
 ?>
-

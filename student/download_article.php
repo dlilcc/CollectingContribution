@@ -18,7 +18,6 @@ if(isset($_GET['id'])) {
     // Check if article exists
     if($article) {
 
-
         // Create PHPWord object
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
 

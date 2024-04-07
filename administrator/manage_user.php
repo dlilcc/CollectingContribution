@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<link rel="stylesheet" href="manage_user.css" />
+<link rel="stylesheet" href="../css/manage_user.css" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -97,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <h1>Manage Users</h1>
+    <a href="../signup.php" class="create">Create account</a>      
 
     <!-- Table to display existing users -->
     <table>
@@ -152,6 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endforeach; ?>
         </tbody>
     </table>
-    <a href="../index.php" class="logout">Back</a>                                
+    <a href="../index.php" class="back">Back</a>                                
 </body>
 </html>

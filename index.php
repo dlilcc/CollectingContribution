@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-// Include necessary files
+// Include necessary files(ads)
+
 require_once 'functions.php';
 
 // Check if the user is logged in
@@ -26,11 +27,11 @@ $_SESSION['last_activity'] = time();
 // Display welcome message
 $user = get_user($_SESSION['user']['username']);
 
-$user_id = $_SESSION['user']['id'];
+// $user_id = $_SESSION['user']['id'];
 
 // Fetch user's faculty information from the database
-$stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
-$stmt->execute([$user_id]);
+$stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE username = ?");
+$stmt->execute([$user['username']]);
 $user_faculty = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Fetch submitted articles from the database
@@ -91,7 +92,7 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Dashboard</h2>
         <ul>
             <?php if (has_role('admin')) : ?>
-                <a href="admin_dashboard.php">Admin Dashboard</a>
+                <li><a href="admin_dashboard.php">Admin Dashboard</a></li>
             <?php endif; ?>
             <?php if (has_role('admin')) : ?>
                 <li><a href="administrator/manage_user.php">Manage User</a></li>
@@ -102,11 +103,26 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php if (has_role('admin')) : ?>
                 <li><a href="administrator/manage_faculty.php">Manage Faculty</a></li>
             <?php endif; ?>
+            <?php if (has_role('admin')) : ?>
+                <li><a href="administrator/report.php">Manage Report</a></li>
+            <?php endif; ?>
             <?php if (has_role('coordinator')) : ?>
                 <li><a href="marketing_coordinator/coordinator_dashboard.php">Coordinator Dashboard</a></li>
             <?php endif; ?>
+            <?php if (has_role('coordinator')) : ?>
+                <li><a href="administrator/report.php">Report</a></li>
+            <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li><a href="marketing_manager/manager.php">Manager Dashboard</a></li>
+            <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li><a href="news_feed.php">News Feed</a></li>
+            <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li><a href="administrator/report.php">Report</a></li>
+            <?php endif; ?>
             <?php if (has_role('student')) : ?>
-                <li><a href="student_dashboard.php">Student Dashboard</a></li>
+                <a href="student_dashboard.php">Student Dashboard</a>
             <?php endif; ?>
             <?php if (has_role('student')) : ?>
                 <li><a href="student/write_article.php">Write your article</a></li>

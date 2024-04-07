@@ -124,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
     </script>
+    <a href="../index.php" class="back">Back</a>
 </body>
 </html>
 
