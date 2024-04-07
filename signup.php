@@ -26,11 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selected_faculty = $_POST['faculty'];
     $email = $_POST['email'];
 
-    // Validate form data
-    if (empty($username) || empty($password) || empty($confirm_password)) {
+     // Validate form data
+     if (empty($username) || empty($password) || empty($confirm_password) || empty($selected_faculty) || empty($email)) {
         $error = 'Please fill in all fields.';
     } elseif ($password !== $confirm_password) {
         $error = 'Passwords do not match.';
+    } elseif (!validatePassword($password)) {
+        $error = 'Password must be at least 8 characters long and contain at least one uppercase letter and one digit.';
     } else {
         // Check if username already exists
         if (username_exists($username)) {
@@ -39,7 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Register new user
             if (register_user($username, $password, $selected_faculty, $email)) {
                 // Redirect to login page after successful registration
-                header('Location: login.php?registered=true');
+                echo 
+                "<script>
+                    alert('You are register successfully');
+                    window.location.href = 'login.php';
+                </script>";
                 exit;
             } else {
                 $error = 'Error registering user. Please try again later.';

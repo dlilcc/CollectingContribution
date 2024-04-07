@@ -82,6 +82,26 @@ function register_user($username, $password, $faculty, $email) {
     return $stmt->execute();
 }
 
+function validatePassword($password) {
+    // Check if password is at least 8 characters long
+    if (strlen($password) < 8) {
+        return false;
+    }
+
+    // Check if password contains at least one uppercase letter
+    if (!preg_match('/[A-Z]/', $password)) {
+        return false;
+    }
+
+    // Check if password contains at least one digit
+    if (!preg_match('/\d/', $password)) {
+        return false;
+    }
+
+    // All conditions passed, password is valid
+    return true;
+}
+
 // Function to check if new article submissions are disabled
 function is_article_submission_disabled() {
     global $pdo;
