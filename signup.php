@@ -62,44 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/signup.css"/>
+
     <title>University Magazine</title>
-    <style>
-        /* Add your CSS styles here */
-        form {
-            margin: auto;
-            width: 300px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-        input[type="text"],
-        input[type="password"],
-        select,
-        button {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .login-link {
-            text-align: center;
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
     <h2>UNIVERSITY MAGAZINE</h2>

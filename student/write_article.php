@@ -26,12 +26,21 @@ if (!is_logged_in()) {
     <title>Write Article - University Magazine</title>
     <!-- Include CKEditor -->
     <script src="https://cdn.ckeditor.com/4.17.2/standard/ckeditor.js"></script>
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
 </head>
 <body>
-    <h1>Write Article</h1>
+    <h1 class="display-1 text-center">Write Article</h1>
     <form id="articleForm" action="submit_article.php" method="post" enctype="multipart/form-data">
-        <label for="article_title">Article Title:</label><br>
-        <input type="text" id="article_title" name="article_title" required><br><br>
+        <div class="mb-3 row" >
+                <label class="col-sm-2 col-form-label" for="article_title">Article Title:</label><br>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" id="article_title" name="article_title" required><br><br>
+            </div>
+        </div>
         <label for="article_content">Article Content:</label><br>
 
         <!-- Include textarea for CKEditor -->

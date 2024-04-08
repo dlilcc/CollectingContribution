@@ -48,93 +48,238 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>University Magazine</title>
 
-    <link rel="stylesheet" href="css/index.css" />
+        <!-- Bootstrap link -->
+    <link rel="stylesheet" href="./css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/T_index.css">
+    <link rel="stylesheet" href="./css/bootstrap/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="./css/bootstrap/js/navbar-toggler.js">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    
 
 </head>
 <body>
-    <div class="header">
-        <h1>Welcome To University Magazine, <?php echo $user['username']; ?>!</h1>
-        <!-- Bell icon and notification count -->
-        <?php if (has_role('coordinator')) : ?>
-            <div class="notification-container">
-
-                <!-- Notification Bell -->
-                <div class="notification-bell" id="notificationBell">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge" id="notificationCount"><?php echo count($newArticles); ?></span>
-                </div>
-                <!-- End Notification Bell -->
-
-                <!-- Display new article submissions -->
-                <div class="notification-box" id="notificationBox">
-                    <?php if (empty($newArticles)): ?>
-                        <p>No new article submissions</p>
-                    <?php else: ?>
-                        <ul>
-                            <?php foreach ($newArticles as $article): ?>
-                                <li>
-                                    <a href="student/view_article.php?id=<?php echo $article['id']; ?>"><?php echo $article['title']; ?></a>
-                                    <!-- Display other details of the article as needed -->
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.php">Home</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+        <ul class="navbar-nav me-auto">
+            <?php if (has_role('admin')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_dashboard.php" class="dropdown-item">Admin Dashboard</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('admin')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrator/manage_user.php" class="dropdown-item">Manage User</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('admin')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrator/manage_closure_dates.php" class="dropdown-item">Manage Closure Dates</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('admin')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrator/manage_faculty.php" class="dropdown-item">Manage Faculty</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('admin')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Manage Report</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('coordinator')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="marketing_coordinator/coordinator_dashboard.php" class="dropdown-item">Coordinator Dashboard</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('coordinator')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="marketing_manager/manager.php" class="dropdown-item">Manager Dashboard</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('manager')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('student')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="student_dashboard.php" class="dropdown-item">Student Dashboard</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('student')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="student/write_article.php" class="dropdown-item">Write your article</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('student')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="student/manage_article.php" class="dropdown-item">Manage your article</a>
+                </li>
+            <?php endif; ?>
+            <?php if (has_role('student')) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                </li>
+            <?php endif; ?>
+      </ul>
+      <form class="d-flex">
+        <button class="btn btn-primary" type="button"><a class="nav-link " href="logout.php">Logout</a></button>
+      </form>
+    </div>
+  </div>
+</nav>
+    <marquee class="greeting" behavior="" direction="">Welcome To University Magazine, <?php echo $user['username']; ?>!</marquee>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dashboard
+                        </a>
+                        <ul class="dropdown-menu">
+                            <?php if (has_role('admin')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="admin_dashboard.php" class="dropdown-item">Admin Dashboard</a>
                                 </li>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php if (has_role('admin')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="administrator/manage_user.php" class="dropdown-item">Manage User</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('admin')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="administrator/manage_closure_dates.php" class="dropdown-item">Manage Closure Dates</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('admin')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="administrator/manage_faculty.php" class="dropdown-item">Manage Faculty</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('admin')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Manage Report</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('coordinator')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="marketing_coordinator/coordinator_dashboard.php" class="dropdown-item">Coordinator Dashboard</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('coordinator')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('manager')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="marketing_manager/manager.php" class="dropdown-item">Manager Dashboard</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('manager')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('manager')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('student')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="student_dashboard.php" class="dropdown-item">Student Dashboard</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('student')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="student/write_article.php" class="dropdown-item">Write your article</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('student')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="student/manage_article.php" class="dropdown-item">Manage your article</a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if (has_role('student')) : ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                                </li>
+                            <?php endif; ?>
                         </ul>
-                    <?php endif; ?>
-                </div>
-                <!-- End Display new article submissions -->
-
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="logout.php">Logout</a>
+                    </li>
+                </ul>
             </div>
-        <?php endif; ?>
-    </div>
+        </div>
+    </nav>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-    <a href="logout.php" class="logout">Logout</a>
+    
+    <div class="header">
 
-    <div>
-        <h2>Dashboard</h2>
-        <ul>
-            <?php if (has_role('admin')) : ?>
-                <li><a href="admin_dashboard.php">Admin Dashboard</a></li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li><a href="administrator/manage_user.php">Manage User</a></li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li><a href="administrator/manage_closure_dates.php">Manage Closure Dates</a></li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li><a href="administrator/manage_faculty.php">Manage Faculty</a></li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li><a href="administrator/report.php">Manage Report</a></li>
-            <?php endif; ?>
-            <?php if (has_role('coordinator')) : ?>
-                <li><a href="marketing_coordinator/coordinator_dashboard.php">Coordinator Dashboard</a></li>
-            <?php endif; ?>
-            <?php if (has_role('coordinator')) : ?>
-                <li><a href="administrator/report.php">Report</a></li>
-            <?php endif; ?>
-            <?php if (has_role('manager')) : ?>
-                <li><a href="marketing_manager/manager.php">Manager Dashboard</a></li>
-            <?php endif; ?>
-            <?php if (has_role('manager')) : ?>
-                <li><a href="news_feed.php">News Feed</a></li>
-            <?php endif; ?>
-            <?php if (has_role('manager')) : ?>
-                <li><a href="administrator/report.php">Report</a></li>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <a href="student_dashboard.php">Student Dashboard</a>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <li><a href="student/write_article.php">Write your article</a></li>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <li><a href="student/manage_article.php">Manage your article</a></li>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <li><a href="news_feed.php">News Feed</a></li>
-            <?php endif; ?>
-        </ul>
+        
+        <!-- Bell icon and notification count -->
     </div>
+    <nav class="navbar col-md-6">
+        <div class="navbar-notification col-md-6">
+            <?php if (has_role('coordinator')) : ?>
+                <div class="notification-container">
+    
+                    <!-- Notification Bell -->
+                    <div class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notificationCount"><?php echo count($newArticles); ?></span>
+                    </div>
+                    <!-- End Notification Bell -->
+                
+                    <!-- Display new article submissions -->
+                    <div class="notification-box" id="notificationBox">
+                        <?php if (empty($newArticles)): ?>
+                            <p>No new article submissions</p>
+                        <?php else: ?>
+                            <ul>
+                                <?php foreach ($newArticles as $article): ?>
+                                    <li>
+                                        <a href="student/view_article.php?id=<?php echo $article['id']; ?>"><?php echo $article['title']; ?></a>
+                                        <!-- Display other details of the article as needed -->
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </div>
+                    <!-- End Display new article submissions -->
+                </div>
+            <?php endif; ?>
+        </div>
+    </nav>
+
+
 
     <script>
         // JavaScript to toggle the visibility of new article submissions when clicking on the bell icon
@@ -145,10 +290,7 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             bell.addEventListener('click', function() {
                 box.classList.toggle('open');
             });
-        });
-
-        
+        });        
     </script>
-
 </body>
 </html>
