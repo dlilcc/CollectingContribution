@@ -34,35 +34,58 @@ if (!is_logged_in()) {
 </head>
 <body>
     <h1 class="display-1 text-center">Write Article</h1>
-    <form id="articleForm" action="submit_article.php" method="post" enctype="multipart/form-data">
+    <form id="articleForm" action="submit_article.php" method="post" enctype="multipart/form-data" >
         <div class="mb-3 row" >
-                <label class="col-sm-2 col-form-label" for="article_title">Article Title:</label><br>
-            <div class="col-sm-10">
+                <label class=" col-form-label" for="article_title">Article Title:</label><br>
+            <div class="col-sm-8">
                 <input class="form-control" type="text" id="article_title" name="article_title" required><br><br>
             </div>
         </div>
         <label for="article_content">Article Content:</label><br>
 
         <!-- Include textarea for CKEditor -->
-        <textarea id="article_content" name="article_content" required></textarea><br><br>
-
-        <!-- Include file uploading -->
-        <label for="document">Upload Word Document:</label>
-        <input type="file" name="document"><br><br>
+        <div class="row">
+            <div class="mb-3 mt-3 col-md-10 offset-md-1">
+                <textarea id="article_content" name="article_content" class="form-control" required></textarea><br><br>
+            </div>
+        </div>
         
-        <!-- Include file input for image upload -->
-        <label for="image">Article Image:</label>
-        <input type="file" id="image" name="image"><br><br>
-        <form method="post" enctype="multipart/form-data">
-            <!-- Other form fields -->
-            <label for="agree_terms">
-                <input type="checkbox" name="agree_terms" id="agree_terms" required>
-                I agree to the Terms and Conditions
-            </label>
-            <button type="submit" name="submit">Submit Article</button>
-        </form>
+        <form action="">
+            
+        <!-- Include file uploading -->
+            <div class="row">
+                <div class="">
+                    <label for="document" lass="form-label custom-label">Upload Word Document:</label>
+                </div>
+                <div class="">
+                    <input type="file" name="document" class="form-control"><br><br>                
+                </div>
+            </div>
 
-        <!--<button type="submit">Submit</button>-->
+        <!-- Include file input for image upload -->
+            <div class="row">
+                <div class="">
+                    <label for="image" class="form-label custom-label">Article Image:</label>
+                </div>
+                <div class="">
+                    <input type="file" id="image" name="image" class="form-control"><br><br>           
+                </div>
+            </div> 
+
+        <!-- Other form fields -->
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-checkbox">
+                    <label for="agree_terms">
+                        <label class="form-check-label" for="flexCheckIndeterminate">
+                            I agree to the Terms and Conditions
+                        </label>
+                        <input class="form-check-input" type="checkbox" name="agree_terms" id="agree_terms" required>
+                    </label>
+                    <!--<button type="submit">Submit</button>-->
+                    <button class="btn btn-secondary" type="submit" name="submit">Submit Article</button>
+                </div>
+            </form>            
+        </form>
     </form>
 
     <!-- Initialize CKEditor -->
@@ -78,7 +101,7 @@ if (!is_logged_in()) {
             }
         });
     </script>
-    <a href="../index.php" class="back">Back</a>
+        <a href="../index.php" class="btn btn-primary">Back</a>
 </body>
 </html>
 

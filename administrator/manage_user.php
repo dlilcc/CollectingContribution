@@ -61,98 +61,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
-    <style>
-        /* Add your CSS styles here */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input[type="text"],
-        input[type="password"],
-        select,
-        button {
-            display: block;
-            margin-bottom: 10px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
+
 </head>
 <body>
-    <h1>Manage Users</h1>
-    <a href="../signup.php" class="create">Create account</a>      
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>Manage Users</h1>
+    </div>
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <a href="../signup.php" class="btn btn-primary p-2 bg-info" role="button">Create account</a>    
+        <a href="../index.php" class="btn btn-primary p-2 bg-primary">Back</a>             
+    </div>
 
     <!-- Table to display existing users -->
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Faculty</th>
-                <th>Password</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $user): ?>
+    <div class="container mt-3">
+        <table class="table table-bordered table-sm">
+            <thead>
                 <tr>
-                    <td><?php echo $user['id']; ?></td>
-                    <td><?php echo $user['username']; ?></td>
-                    <td><?php echo $user['role']; ?></td>
-                    <td><?php echo $user['faculty_name']; ?></td>
-                    <td>
-                        <!-- Form to update password -->
-                        <form method="post">
-                            <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                            <input type="password" name="new_password" placeholder="New Password" required>
-                            <button type="submit" name="update_password">Update</button>
-                        </form>
-                    </td>
-                    <td>
-                        <!-- Form to update role and faculty -->
-                        <form method="post">
-                            <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                            <select name="new_role" required>
-                                <option value=""></option>
-                                <option value="admin">Admin</option>
-                                <option value="coordinator">Coordinator</option>
-                                <option value="student">Student</option>
-                                <option value="student">Manager</option>
-                            </select>
-                            <select name="new_faculty" required>
-                                <!-- Fetch faculties from database and populate options -->
-                                <?php
-                                    $faculties = get_faculties();
-                                    foreach ($faculties as $faculty) {
-                                        echo "<option value='{$faculty['faculty_name']}'>{$faculty['faculty_name']}</option>";
-                                    }
-                                ?>
-                            </select>
-                            <button type="submit" name="update_role_faculty">Update</button>
-                        </form>
-                    </td>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Faculty</th>
+                    <th>Password</th>
+                    <th>Action</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <a href="../index.php" class="back">Back</a>                                
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?php echo $user['id']; ?></td>
+                        <td><?php echo $user['username']; ?></td>
+                        <td><?php echo $user['role']; ?></td>
+                        <td><?php echo $user['faculty_name']; ?></td>
+                        <td>
+                            <!-- Form to update password -->
+                            <form method="post" class="input-group input-group-sm mb-3">
+                                <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                <input class="form-control" type="password" name="new_password" placeholder="New Password" required>
+                                <button type="submit" name="update_password" class="btn btn-outline-secondary">Update</button>
+                            </form>
+                        </td>
+                        <td>
+                            <!-- Form to update role and faculty -->
+                            <form method="post" class="input-group input-group-sm mb-3">
+                                <input class="form-control" type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                <select class="form-control" name="new_role" required>
+                                    <option value=""></option>
+                                    <option value="admin">Admin</option>
+                                    <option value="coordinator">Coordinator</option>
+                                    <option value="student">Student</option>
+                                    <option value="student">Manager</option>
+                                </select>
+                                <select class="form-control" name="new_faculty" required>
+                                    <!-- Fetch faculties from database and populate options -->
+                                    <?php
+                                        $faculties = get_faculties();
+                                        foreach ($faculties as $faculty) {
+                                            echo "<option value='{$faculty['faculty_name']}'>{$faculty['faculty_name']}</option>";
+                                        }
+                                    ?>
+                                </select>
+                                <button type="submit" name="update_role_faculty" class="btn btn-outline-secondary">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>                         
 </body>
 </html>

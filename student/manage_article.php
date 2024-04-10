@@ -132,38 +132,62 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Articles</title>
+
+    <link rel="stylesheet" href="../css/manage_article.css">
+    <link rel="stylesheet" href="../css.manage_user.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
+
+
 </head>
 <body>
-    <h1>Manage Articles</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($articles as $article): ?>
+    <div class="nav">
+        <h1>Manage Articles</h1>        
+        <a href="../index.php" class="btn btn-primary button-back" role="button">Back</a>    
+    </div>
+    <div class="container mt-3">
+        <table class="table-manager">
+            <thead>
                 <tr>
-                    <td><?php echo htmlspecialchars($article['title']); ?></td>
-                    <td>
-                        <a href="view_article.php?id=<?php echo $article['id']; ?>">View</a>
-                        <a href="edit_article.php?id=<?php echo $article['id']; ?>">Edit</a>
-                        <a href="delete_article.php?id=<?php echo $article['id']; ?>">Delete</a>
-                        <?php if ($article['is_published'] == 1 && $article['is_disabled'] == 0): ?>
-                            <a href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
-                        <?php endif; ?>
-                        <?php if ($article['is_disabled'] == 1 && $article['is_published'] == 0): ?>
-                            <t>Rejected</t>
-                        <?php endif; ?>
-                        <?php if ($article['is_published'] == 0 && $article['is_disabled'] == 0): ?>
-                            <t>Waiting</t>
-                        <?php endif; ?>
-                    </td>
+                    <th>Title</th>
+                    <th>Action</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <a href="../index.php" class="back">Back</a>
+            </thead>
+            <tbody>
+                <?php foreach ($articles as $article): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($article['title']); ?></td>
+                        <td>
+                            
+                            <a class="table-manager-link" href="view_article.php?id=<?php echo $article['id']; ?>">
+                                <button class="btn btn-warning btn-manager-view">
+                                    View
+                                </button>
+                            </a>
+                            <a class="table-manager-link " href="edit_article.php?id=<?php echo $article['id']; ?>">
+                                <button class="btn btn-secondary btn-manager-edit">Edit</button>
+                            </a>
+                            <a class="table-manager-link " href="delete_article.php?id=<?php echo $article['id']; ?>">
+                                <button class="btn btn-danger btn-manager-delete">Delete</button>
+                            </a>
+                            <?php if ($article['is_published'] == 1 && $article['is_disabled'] == 0): ?>
+                                <a class="table-manager-link" href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
+                            <?php endif; ?>
+                            <?php if ($article['is_disabled'] == 1 && $article['is_published'] == 0): ?>
+                                <t>Rejected</t>
+                            <?php endif; ?>
+                            <?php if ($article['is_published'] == 0 && $article['is_disabled'] == 0): ?>
+                                <t>Waiting</t>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+    </div>
 </body>
 </html>

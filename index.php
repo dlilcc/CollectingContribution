@@ -63,180 +63,91 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.php">Home</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mynavbar">
-        <ul class="navbar-nav me-auto">
-            <?php if (has_role('admin')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin_dashboard.php" class="dropdown-item">Admin Dashboard</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="administrator/manage_user.php" class="dropdown-item">Manage User</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="administrator/manage_closure_dates.php" class="dropdown-item">Manage Closure Dates</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="administrator/manage_faculty.php" class="dropdown-item">Manage Faculty</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('admin')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Manage Report</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('coordinator')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="marketing_coordinator/coordinator_dashboard.php" class="dropdown-item">Coordinator Dashboard</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('coordinator')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('manager')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="marketing_manager/manager.php" class="dropdown-item">Manager Dashboard</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('manager')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('manager')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="student_dashboard.php" class="dropdown-item">Student Dashboard</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="student/write_article.php" class="dropdown-item">Write your article</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="student/manage_article.php" class="dropdown-item">Manage your article</a>
-                </li>
-            <?php endif; ?>
-            <?php if (has_role('student')) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
-                </li>
-            <?php endif; ?>
-      </ul>
-      <form class="d-flex">
-        <button class="btn btn-primary" type="button"><a class="nav-link " href="logout.php">Logout</a></button>
-      </form>
-    </div>
-  </div>
-</nav>
-    <marquee class="greeting" behavior="" direction="">Welcome To University Magazine, <?php echo $user['username']; ?>!</marquee>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <a class="navbar-brand" href="index.php">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <?php if (has_role('admin')) : ?>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link" href="admin_dashboard.php" class="dropdown-item">Admin Dashboard</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dashboard
-                        </a>
-                        <ul class="dropdown-menu">
-                            <?php if (has_role('admin')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="admin_dashboard.php" class="dropdown-item">Admin Dashboard</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('admin')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="administrator/manage_user.php" class="dropdown-item">Manage User</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('admin')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="administrator/manage_closure_dates.php" class="dropdown-item">Manage Closure Dates</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('admin')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="administrator/manage_faculty.php" class="dropdown-item">Manage Faculty</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('admin')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Manage Report</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('coordinator')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="marketing_coordinator/coordinator_dashboard.php" class="dropdown-item">Coordinator Dashboard</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('coordinator')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('manager')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="marketing_manager/manager.php" class="dropdown-item">Manager Dashboard</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('manager')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('manager')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('student')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="student_dashboard.php" class="dropdown-item">Student Dashboard</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('student')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="student/write_article.php" class="dropdown-item">Write your article</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('student')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="student/manage_article.php" class="dropdown-item">Manage your article</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if (has_role('student')) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    </li>
+                <?php endif; ?>
+                <?php if (has_role('admin')) : ?>
                     <li class="nav-item">
-                        <a class="nav-link " href="logout.php">Logout</a>
+                        <a class="nav-link" href="administrator/manage_user.php" class="dropdown-item">Manage User</a>
                     </li>
-                </ul>
-            </div>
+                <?php endif; ?>
+                <?php if (has_role('admin')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="administrator/manage_closure_dates.php" class="dropdown-item">Manage Closure Dates</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('admin')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="administrator/manage_faculty.php" class="dropdown-item">Manage Faculty</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('admin')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="administrator/report.php" class="dropdown-item">Manage Report</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('coordinator')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="marketing_coordinator/coordinator_dashboard.php" class="dropdown-item">Coordinator Dashboard</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('coordinator')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('manager')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="marketing_manager/manager.php" class="dropdown-item">Manager Dashboard</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('manager')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('manager')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('student')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student_dashboard.php" class="dropdown-item">Student Dashboard</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('student')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student/write_article.php" class="dropdown-item">Write your article</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('student')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student/manage_article.php" class="dropdown-item">Manage your article</a>
+                    </li>
+                <?php endif; ?>
+                <?php if (has_role('student')) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                    </li>
+                <?php endif; ?>
+        </ul>
+        <form class="d-flex">
+            <button class="btn btn-primary" type="button"><a class="nav-link " href="logout.php">Logout</a></button>
+        </form>
         </div>
+    </div>
+</nav>
+<marquee class="greeting" behavior="" direction="">Welcome To University Magazine, <?php echo $user['username']; ?>!</marquee>
+    
     </nav>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
