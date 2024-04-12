@@ -49,29 +49,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Faculties</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
 </head>
 <body>
-    <h1>Manage Faculties</h1>
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>Manage Faculties</h1>
+    </div>
+    <a href="../index.php" class="btn btn-outline-primary">Back</a>
+    <div class="container">
+        <!-- Add Faculty Form -->
+        <form class="input-group mb-3" action="manage_faculty.php" method="post">
+            <label class="input-group-text"  for="new_faculty">New Faculty:</label>
+            <input class="input-group-text"  type="text" id="new_faculty" name="new_faculty" required>
+            <button class="btn btn-outline-secondary" type="submit" name="add_faculty">Add Faculty</button>
+        </form>
+    
+        <!-- List of Faculties -->
+        <div class="d-flex justify-content-center bg-secondary mb-3">
+            <h2>Existing Faculties</h2>
+        </div>
+        <ul class="list-group list-group-flush">
+            <?php foreach ($faculties as $faculty): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center"><?php echo htmlspecialchars($faculty['faculty_name']); ?>
+                    <form  action="manage_faculty.php" method="post" style="display:inline;">
+                        <input type="hidden" name="faculty_to_delete" value="<?php echo $faculty['faculty_name']; ?>">
+                        <button class="btn btn-outline-danger" type="submit" name="delete_faculty" onclick="return confirm('Are you sure you want to delete this closure date?')">Delete</button>
+                    </form>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
 
-    <!-- Add Faculty Form -->
-    <form action="manage_faculty.php" method="post">
-        <label for="new_faculty">New Faculty:</label>
-        <input type="text" id="new_faculty" name="new_faculty" required>
-        <button type="submit" name="add_faculty">Add Faculty</button>
-    </form>
-
-    <!-- List of Faculties -->
-    <h2>Existing Faculties</h2>
-    <ul>
-        <?php foreach ($faculties as $faculty): ?>
-            <li><?php echo htmlspecialchars($faculty['faculty_name']); ?>
-                <form action="manage_faculty.php" method="post" style="display:inline;">
-                    <input type="hidden" name="faculty_to_delete" value="<?php echo $faculty['faculty_name']; ?>">
-                    <button type="submit" name="delete_faculty" onclick="return confirm('Are you sure you want to delete this closure date?')">Delete</button>
-                </form>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-    <a href="../index.php" class="back">Back</a>
 </body>
 </html>

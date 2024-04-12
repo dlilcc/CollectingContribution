@@ -6,8 +6,20 @@
     <title>Report</title>
     <!-- Include Google Charts library -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
 </head>
 <body>
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>Manage Report</h1>
+    </div>
+
+    <a href="../index.php" class="btn btn-outline-primary">Back</a>
+
     <?php
     // Include necessary files
     require_once __DIR__ . '/../includes/config.php';
@@ -31,64 +43,72 @@
 
     <!-- Display report data and chart if $reportData is not empty -->
     <?php if (!empty($reportData)) : ?>
-        <h2>Report</h2>
-        <div id="chart_div"></div>
-        <script>
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
+        <div class="container">
+            <div class="d-flex justify-content-around bg-secondary mb-3">
+                <h2>Report</h2>
+            </div>    
+            <div id="chart_div"></div>
+            <script>
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Faculty/User');
-                data.addColumn('number', 'Number of Contributions');
-                <?php foreach ($reportData as $row) : ?>
-                    data.addRow(['<?php echo $row[$chartValue]; ?>', <?php echo $row['num_contributions']; ?>]);
-                <?php endforeach; ?>
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Faculty/User');
+                    data.addColumn('number', 'Number of Contributions');
+                    <?php foreach ($reportData as $row) : ?>
+                        data.addRow(['<?php echo $row[$chartValue]; ?>', <?php echo $row['num_contributions']; ?>]);
+                    <?php endforeach; ?>
 
-                var options = {
-                    title: 'Report Chart',
-                    width: '100%',
-                    height: 400
-                };
+                    var options = {
+                        title: 'Report Chart',
+                        width: '100%',
+                        height: 400
+                    };
 
-                
-                <?php if ($chartType == 'pie') : ?>
-                    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-                    chart.draw(data, options);
-                <?php endif; ?>
-                <?php if ($chartType == 'column') : ?>
-                    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-                    chart.draw(data, options);
-                <?php endif; ?>
-            }
-        </script>
+                    
+                    <?php if ($chartType == 'pie') : ?>
+                        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                        chart.draw(data, options);
+                    <?php endif; ?>
+                    <?php if ($chartType == 'column') : ?>
+                        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                        chart.draw(data, options);
+                    <?php endif; ?>
+                }
+            </script>
+        </div>
     <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST') : ?>
         <p>No data available for the selected report.</p>
     <?php endif; ?>
-
-    <!-- Form to select report type and generate report -->
-    <form method="post">
-        <label for="report_type">Select Report Type:</label>
-        <select name="report_type" id="report_type">
-            <option value="contributions_per_faculty">Number of Contributions per Faculty</option>
-            <option value="contributions_per_user">Number of Contributions per User</option>
-            <option value="percentage_contributions_per_faculty">Percentage of Contributions</option>
-        </select>
-        <!-- Add a dropdown menu to select the year -->
-        <label for="year">Select Year:</label>
-        <select name="year" id="year">
-            <?php
-            // Generate options for the past few years
-            $currentYear = date("Y");
-            for ($year = $currentYear; $year >= $currentYear - 5; $year--) {
-                echo "<option value=\"$year\">$year</option>";
-            }
-            ?>
-        </select>
-        <!-- Button to submit the form -->
-        <button type="submit" name="generate_report">Generate Report</button>
-        <!-- Link to go back to the index page -->
-        <a href="../index.php" class="back">Back</a>
-    </form>
+    <div class="container">
+        <form class="form-control" method="post">
+            <!-- Form to select report type and generate report -->
+            <div class="input-group mt-3 mb-3">
+                <label class="input-group-text" for="report_type">Select Report Type:</label>
+                <select class="form-select" name="report_type" id="report_type">
+                    <option value="contributions_per_faculty">Number of Contributions per Faculty</option>
+                    <option value="contributions_per_user">Number of Contributions per User</option>
+                    <option value="percentage_contributions_per_faculty">Percentage of Contributions</option>
+                </select>
+            </div>
+            <div class="input-group mt-3 mb-3">
+                <!-- Add a dropdown menu to select the year -->
+                <label class="input-group-text" for="year">Select Year:</label>
+                <select class="form-select" name="year" id="year">
+                    <?php
+                    // Generate options for the past few years
+                    $currentYear = date("Y");
+                    for ($year = $currentYear; $year >= $currentYear - 5; $year--) {
+                        echo "<option value=\"$year\">$year</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <!-- Button to submit the form -->
+            <button class="btn btn-outline-primary" type="submit" name="generate_report">Generate Report</button>
+            <!-- Link to go back to the index page -->
+        </form>
+    </div>
 </body>
 </html>

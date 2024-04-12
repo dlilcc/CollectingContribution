@@ -28,65 +28,63 @@ if ($stmt) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Closure Dates</title>
-    <style>
-        /* Add your CSS styles here */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="date"] {
-            width: 200px;
-        }
-    </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
 </head>
 <body>
-    <h1>Manage Closure Dates</h1>
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>Manage Closure Dates</h1>
+    </div>
+    <a href="../index.php" class="btn btn-primary">Back</a>
 
     <!-- Form to add new closure date -->
-    <form action="add_closure_date.php" method="post">
-        <label for="academicYear">Academic Year:</label>
-        <input type="text" id="academicYear" name="academicYear" required>
-        <label for="closureDate">Closure Date:</label>
-        <input type="date" id="closureDate" name="closureDate" required>
-        <label for="finalClosureDate">Final Closure Date:</label>
-        <input type="date" id="finalClosureDate" name="finalClosureDate" required>
-        <button type="submit">Add Closure Date</button>
-    </form>
-
+    <div class="container">
+        <form class="input-group mb-3" action="add_closure_date.php" method="post">
+            <label class="input-group-text" for="academicYear">Academic Year:</label>
+            <input class="form-control" type="text" id="academicYear" name="academicYear" required>
+        </form>
+        <form class="input-group mb-3" action="add_closure_date.php" method="post">
+            <label class="input-group-text" for="closureDate">Closure Date:</label>
+            <input class="form-control" type="date" id="closureDate" name="closureDate" required>
+        </form>
+        <form class="input-group mb-3" action="add_closure_date.php" method="post">
+            <label class="input-group-text" for="finalClosureDate">Final Closure Date:</label>
+            <input class="form-control" type="date" id="finalClosureDate" name="finalClosureDate" required>
+    
+        </form>
+        <form action="add_closure_date.php" method="post">
+            <button class="btn btn-secondary" type="submit">Add Closure Date</button>
+        </form>
+    </div>
     <!-- Table to display existing closure dates -->
-    <table>
-        <thead>
-            <tr>
-                <th>Academic Year</th>
-                <th>Closure Date</th>
-                <th>Final Closure Date</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($closureDates as $closureDate): ?>
+    <div class="container">
+        <table class="table-bordered">
+            <thead>
                 <tr>
-                    <td><?php echo $closureDate['academic_year']; ?></td>
-                    <td><?php echo $closureDate['closure_date']; ?></td>
-                    <td><?php echo $closureDate['final_closure_date']; ?></td>
-                    <td>
-                        <a href="edit_closure_date.php?id=<?php echo $closureDate['id']; ?>">Edit</a>
-                        <a href="delete_closure_date.php?id=<?php echo $closureDate['id']; ?>&confirmed=true" onclick="return confirm('Are you sure you want to delete this closure date?')">Delete</a>
-                    </td>
+                    <th>Academic Year</th>
+                    <th>Closure Date</th>
+                    <th>Final Closure Date</th>
+                    <th>Action</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <a href="../index.php" class="back">Back</a>
+            </thead>
+            <tbody>
+                <?php foreach ($closureDates as $closureDate): ?>
+                    <tr>
+                        <td><?php echo $closureDate['academic_year']; ?></td>
+                        <td><?php echo $closureDate['closure_date']; ?></td>
+                        <td><?php echo $closureDate['final_closure_date']; ?></td>
+                        <td>
+                            <a class="btn btn-outline-warning" href="edit_closure_date.php?id=<?php echo $closureDate['id']; ?>">Edit</a>
+                            <a class="btn btn-outline-danger" href="delete_closure_date.php?id=<?php echo $closureDate['id']; ?>&confirmed=true" onclick="return confirm('Are you sure you want to delete this closure date?')">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
