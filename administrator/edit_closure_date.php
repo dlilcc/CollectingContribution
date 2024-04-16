@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="d-flex justify-content-around bg-secondary mb-3">
         <h1>Edit Closure Date</h1>
     </div>
-    <a href="../index.php" class="btn btn-outline-primary">Back</a>
+    <a href="../administrator/manage_closure_dates.php" class="btn btn-outline-primary">Back</a>
 
     <!-- Form to edit closure date -->
     <form action="" method="post" class="input-group mb-3">

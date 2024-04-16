@@ -61,90 +61,90 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 </head>
 <body>
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-  <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mynavbar">
-            <ul class="navbar-nav me-auto">
-                <?php if (has_role('admin')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin_dashboard.php" class="dropdown-item">Admin Dashboard</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('admin')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="administrator/manage_user.php" class="dropdown-item">Manage User</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('admin')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="administrator/manage_closure_dates.php" class="dropdown-item">Manage Closure Dates</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('admin')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="administrator/manage_faculty.php" class="dropdown-item">Manage Faculty</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('admin')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="administrator/report.php" class="dropdown-item">Manage Report</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('coordinator')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="marketing_coordinator/coordinator_dashboard.php" class="dropdown-item">Coordinator Dashboard</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('coordinator')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('manager')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="marketing_manager/manager.php" class="dropdown-item">Manager Dashboard</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('manager')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('manager')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('student')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="student_dashboard.php" class="dropdown-item">Student Dashboard</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('student')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="student/write_article.php" class="dropdown-item">Write your article</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('student')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="student/manage_article.php" class="dropdown-item">Manage your article</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (has_role('student')) : ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
-                    </li>
-                <?php endif; ?>
-        </ul>
-        <form class="d-flex">
-            <button class="btn btn-primary" type="button"><a class="nav-link " href="logout.php">Logout</a></button>
-        </form>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <?php if (has_role('admin')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin_dashboard.php" class="dropdown-item">Admin Dashboard</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('admin')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="administrator/manage_user.php" class="dropdown-item">Manage User</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('admin')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="administrator/manage_closure_dates.php" class="dropdown-item">Manage Closure Dates</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('admin')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="administrator/manage_faculty.php" class="dropdown-item">Manage Faculty</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('admin')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="administrator/report.php" class="dropdown-item">Manage Report</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('coordinator')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="marketing_coordinator/coordinator_dashboard.php" class="dropdown-item">Coordinator Dashboard</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('coordinator')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('manager')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="marketing_manager/manager.php" class="dropdown-item">Manager Dashboard</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('manager')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('manager')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('student')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="student_dashboard.php" class="dropdown-item">Student Dashboard</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('student')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="student/write_article.php" class="dropdown-item">Write your article</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('student')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="student/manage_article.php" class="dropdown-item">Manage your article</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('student')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+                <form class="d-flex">
+                    <button class="btn btn-primary" type="button"><a class="nav-link " href="logout.php">Logout</a></button>
+                </form>
+            </div>
         </div>
-    </div>
 </nav>
 <marquee class="greeting" behavior="" direction="">Welcome To University Magazine, <?php echo $user['username']; ?>!</marquee>
     
@@ -189,54 +189,7 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
         </div>
     </nav>
-
-
-    <div class="container mt-5">
-  <div class="row">
-    <div class="col-sm-4">
-      <h2>About Me</h2>
-      <h5>Photo of me:</h5>
-      <div class="fakeimg">Fake Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-      <h3 class="mt-4">Some Links</h3>
-      <p>Lorem ipsum dolor sit ame.</p>
-      <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Active</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-      </ul>
-      <hr class="d-sm-none">
-    </div>
-    <div class="col-sm-8">
-      <h2>TITLE HEADING</h2>
-      <h5>Title description, Dec 7, 2020</h5>
-      <div class="fakeimg">Fake Image</div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-
-      <h2 class="mt-5">TITLE HEADING</h2>
-      <h5>Title description, Sep 2, 2020</h5>
-      <div class="fakeimg">Fake Image</div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-    </div>
-  </div>
-</div>
-
-<div class="mt-5 p-4 bg-dark text-white text-center">
-  <p>Footer</p>
-</div>
-
-
+                                    
     <script>
         // JavaScript to toggle the visibility of new article submissions when clicking on the bell icon
         document.addEventListener('DOMContentLoaded', function() {

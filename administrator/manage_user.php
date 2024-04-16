@@ -109,8 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <!-- Form to update role and faculty -->
                             <form method="post" class="input-group input-group-sm mb-3">
                                 <input class="form-control" type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                <select class="form-control" name="new_role" required>
-                                    <option value=""></option>
+                                <select class="form-control" name="new_role" required>Role
+                                    <option value="">Role</option>
                                     <option value="admin">Admin</option>
                                     <option value="coordinator">Coordinator</option>
                                     <option value="student">Student</option>
