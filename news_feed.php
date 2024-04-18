@@ -4,7 +4,6 @@ session_start();
 // Include necessary files
 require_once 'functions.php';
 
-
 // Check if the user is logged in
 if (!is_logged_in()) {
     header('Location: login.php');
@@ -14,23 +13,46 @@ if (!is_logged_in()) {
 // Fetch the user's ID from the session
 $user_id = $_SESSION['user']['id'];
 
-// Fetch the user's faculty from the database
-$stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
+// Fetch the user's role and faculty from the database
+$stmt = $pdo->prepare("SELECT role, faculty_name FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Check if user's faculty is fetched successfully
-if (!$user || empty($user['faculty_name'])) {
+// Check if user's role and faculty are fetched successfully
+if (!$user || empty($user['role'])) {
     // Handle error (redirect, display message, etc.)
-    exit('Error: Unable to fetch user\'s faculty');
+    exit('Error: Unable to fetch user\'s role');
 }
 
+$user_role = $user['role'];
 $user_faculty = $user['faculty_name'];
 
-// Fetch articles from the database based on the user's faculty
-$stmt = $pdo->prepare("SELECT * FROM articles WHERE faculty_name = ? AND is_published = 1 ");
-$stmt->execute([$user_faculty]);
-$articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Fetch all faculties
+$faculties = get_faculties();
+
+// Initialize variable
+$selected_faculty = '';
+
+// Check if form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $selected_faculty = $_POST['faculty'];
+}
+
+// Retrieve articles based on user's role and selected faculty
+if ($user_role === 'manager') {
+    if (!empty($selected_faculty)) {
+        $stmt = $pdo->prepare("SELECT * FROM articles WHERE faculty_name = ? AND is_published = 1");
+        $stmt->execute([$selected_faculty]);
+        $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $stmt = $pdo->query("SELECT * FROM articles WHERE is_published = 1");
+        $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+} else {
+    $stmt = $pdo->prepare("SELECT * FROM articles WHERE faculty_name = ? AND is_published = 1");
+    $stmt->execute([$user_faculty]);
+    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +72,23 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 <body>
-    <h1>News Feed - <?php echo htmlspecialchars($user_faculty); ?></h1>
+    <h1>News Feed</h1>
+
+    <!-- Faculty selection form for Marketing Manager -->
+    <?php if ($user_role === 'manager') : ?>
+        <form method="post">
+            <label for="faculty">Select Faculty:</label>
+            <select name="faculty" id="faculty">
+                <option value="">All Faculties</option>
+                <?php foreach ($faculties as $faculty) : ?>
+                    <option value="<?php echo htmlspecialchars($faculty['faculty_name']); ?>" <?php echo ($selected_faculty === $faculty['faculty_name']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($faculty['faculty_name']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+    <?php endif; ?>
 
     <div>
         <?php foreach ($articles as $article): ?>
@@ -60,12 +98,15 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Image">
                 <?php endif; ?>
                 <p><a href="student/view_article.php?id=<?php echo $article['id']; ?>">Read more</a></p>
-
                 <?php
                 if (is_article_update_disabled() && has_role('manager')) {
                     echo '<a href="marketing_manager/manager.php?id=' . $article['id'] . '&action=download_zip">Download ZIP</a>';
                 }
+                if (has_role('coordinator')){
+                    echo '<a href="student/download_article.php?id=' . $article['id'] . '">Download as Word</a>';
+                }
                 ?>
+                
             </div>
             <hr>
         <?php endforeach; ?>
@@ -73,5 +114,3 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="index.php" class="back">Back</a>
 </body>
 </html>
-
-
