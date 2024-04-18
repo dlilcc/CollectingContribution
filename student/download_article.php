@@ -18,7 +18,7 @@ if(isset($_GET['id'])) {
     // Check if article exists
     if($article) {
 
-     // Convert article content to Word document
+        // Convert article content to Word document
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
         $section = $phpWord->addSection();
         $section->addTitle(htmlspecialchars($article['title']), 1);
@@ -61,7 +61,7 @@ if(isset($_GET['id'])) {
             // Delete temporary files and directory
             unlink($word_file);
             unlink($zip_file);
-            
+
             exit;
         } else {
             // Article not found, handle the error (display an error message or redirect)
