@@ -139,6 +139,16 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
                         </li>
                     <?php endif; ?>
+                    <?php if (has_role('guest')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('guest')) : ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="news_feed.php" class="dropdown-item">News Feed</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
                 <form class="d-flex">
                     <button class="btn btn-primary" type="button"><a class="nav-link " href="logout.php">Logout</a></button>

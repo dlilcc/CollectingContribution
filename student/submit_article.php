@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$articleTitle, $articleContent, $imageUrl, $userId, $currentDate, $facultyName, $closureDates['closure_date'], $closureDates['final_closure_date'], $documentName]);
             
             // Sending notification for the Coordinator 
-            //sendMail($userEmail, $title, $message);
+            sendMail($userEmail, $title, $message);
             
             // Redirect to submission confirmation page
             header('Location: submission_confirmation.php');

@@ -60,16 +60,12 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Image">
                 <?php endif; ?>
                 <p><a href="student/view_article.php?id=<?php echo $article['id']; ?>">Read more</a></p>
-                <?php if (has_role('manager')) : ?>
-                <li><a href="marketing_manager/manager.php?id=<?php echo $article['id']; ?>">Manager control</a></li>
-                <?php endif; ?>
 
                 <?php
                 if (is_article_update_disabled() && has_role('manager')) {
                     echo '<a href="marketing_manager/manager.php?id=' . $article['id'] . '&action=download_zip">Download ZIP</a>';
                 }
                 ?>
-                
             </div>
             <hr>
         <?php endforeach; ?>

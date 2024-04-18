@@ -114,7 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <option value="admin">Admin</option>
                                     <option value="coordinator">Coordinator</option>
                                     <option value="student">Student</option>
-                                    <option value="student">Manager</option>
+                                    <option value="manager">Manager</option>
+                                    <option value="guest">Guest</option>
                                 </select>
                                 <select class="form-control" name="new_faculty" required>
                                     <!-- Fetch faculties from database and populate options -->

@@ -42,24 +42,15 @@ if ($stmt) {
     <a href="../index.php" class="btn btn-primary">Back</a>
 
     <!-- Form to add new closure date -->
-    <div class="container">
-        <form class="input-group mb-3" action="add_closure_date.php" method="post">
-            <label class="input-group-text" for="academicYear">Academic Year:</label>
-            <input class="form-control" type="text" id="academicYear" name="academicYear" required>
-        </form>
-        <form class="input-group mb-3" action="add_closure_date.php" method="post">
-            <label class="input-group-text" for="closureDate">Closure Date:</label>
-            <input class="form-control" type="date" id="closureDate" name="closureDate" required>
-        </form>
-        <form class="input-group mb-3" action="add_closure_date.php" method="post">
-            <label class="input-group-text" for="finalClosureDate">Final Closure Date:</label>
-            <input class="form-control" type="date" id="finalClosureDate" name="finalClosureDate" required>
-    
-        </form>
-        <form action="add_closure_date.php" method="post">
-            <button class="btn btn-secondary" type="submit">Add Closure Date</button>
-        </form>
-    </div>
+    <form action="add_closure_date.php" method="post">
+        <label for="academicYear">Academic Year:</label>
+        <input type="text" id="academicYear" name="academicYear" required>
+        <label for="closureDate">Closure Date:</label>
+        <input type="date" id="closureDate" name="closureDate" required>
+        <label for="finalClosureDate">Final Closure Date:</label>
+        <input type="date" id="finalClosureDate" name="finalClosureDate" required>
+        <button type="submit">Add Closure Date</button>
+    </form>
     <!-- Table to display existing closure dates -->
     <div class="container">
         <table class="table-bordered">
