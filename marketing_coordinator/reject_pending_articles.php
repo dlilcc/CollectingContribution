@@ -15,6 +15,5 @@ foreach ($articles as $article) {
     $stmt = $pdo->prepare("UPDATE articles SET is_disabled = 1 WHERE id = ?");
     $stmt->execute([$articleId]);
 }
-
 // Optionally, send notifications to users informing them that their articles have been rejected
 ?>

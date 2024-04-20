@@ -38,6 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
     $stmt = $pdo->prepare("INSERT INTO comments (article_id, coordinator_id, comment_text) VALUES (?, ?, ?)");
     $stmt->execute([$article_id, $coordinator_id, $comment_text]);
 
+    $comment = 'yes';
+    $stmt = $pdo->prepare("UPDATE articles SET comment = ? WHERE id = ?");
+    $stmt->execute([$comment, $article_id]);
+    
+
     // Redirect back to the same article view page after submitting the comment
     header("Location: view_article.php?id=$article_id");
     exit;
@@ -76,13 +81,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
     ?>
 
     <!-- Form for coordinators to leave comments -->
-    <?php if (has_role("coordinator")) : ?> 
+    <?php if (has_role("coordinator") && checkComment($article_id)) : ?> 
+        <?php echo checkComment($article_id); ?>
     <form method="post">
         <textarea name="comment_text" placeholder="Leave a comment..." required></textarea>
         <input type="hidden" name="article_id" value="<?php echo $article_id; ?>">
         <button type="submit" name="submit_comment">Submit Comment</button>
     </form>
     <?php endif; ?>
+
     <a href="../index.php" class="back">Back</a>
+
 </body>
 </html>
