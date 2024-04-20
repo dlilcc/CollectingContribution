@@ -106,7 +106,6 @@ if ($user_role === 'manager') {
                     echo '<a href="student/download_article.php?id=' . $article['id'] . '">Download as Word</a>';
                 }
                 ?>
-                
             </div>
             <hr>
         <?php endforeach; ?>

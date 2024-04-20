@@ -19,16 +19,12 @@ $stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Fetch pending articles from the database
-$stmt = $pdo->prepare("SELECT * FROM articles WHERE is_disabled = 0 AND is_published = 0 AND faculty_name = ?");
-$stmt->execute([$user['faculty_name']]);
-$articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 // Fetch pended articles from the database
-$stmt = $pdo->prepare("SELECT * FROM articles WHERE is_disabled = 1 OR is_published = 1 AND faculty_name = ?");
+$stmt = $pdo->prepare("SELECT * FROM articles WHERE is_disabled = 1 AND faculty_name = ?");
 $stmt->execute([$user['faculty_name']]);
 $pendedArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$flag = false;
 // Process article approval
 if (isset($_POST['approve'])) {
     $article_id = $_POST['article_id'];
@@ -36,6 +32,7 @@ if (isset($_POST['approve'])) {
     $stmt->execute([$article_id]);
     $stmt = $pdo->prepare("UPDATE articles SET is_disabled = 0 WHERE id = ?");
     $stmt->execute([$article_id]);
+    $flag = true;
 }
 
 // Process article reject
@@ -45,6 +42,7 @@ if (isset($_POST['reject'])) {
     $stmt->execute([$article_id]);
     $stmt = $pdo->prepare("UPDATE articles SET is_disabled = 1 WHERE id = ?");
     $stmt->execute([$article_id]);
+    $flag = true;
 }
 ?>
 
@@ -56,61 +54,38 @@ if (isset($_POST['reject'])) {
     <title>Coordinator Manage Articles</title>
 </head>
 <body>
-    <h1>Marketing Coordinator - Manage Articles</h1>
-    <h2>Pending Article</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Content</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($articles as $article): ?>
+    <h1>Marketing Coordinator - Manage Submitted Articles</h1>
+        <h2>Re-Pending Article</h2>
+        <table>
+            <thead>
                 <tr>
-                    <td><?php echo $article['title']; ?></td>
-                    <td><?php echo $article['user_id']; ?></td> <!-- Assuming user_id is the author's ID -->
-                    <td><?php echo $article['content']; ?></td>
-                    <td>
-                        <form action="" method="post">
-                            <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
-                            <button type="submit" name="approve">Approve</button>
-                            <button type="submit" name="reject">Reject</button>
-                        </form>
-                    </td>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Content</th>
+                    <th>Action</th>
+                    <?php echo $flag;?>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <h2>Submitted Article</h2>
-    <a href="process_repend.php">Re-Pending Articles</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Content</th>
-                <th>Status</th>
-            </tr>
+            </thead>
             <tbody>
                 <?php foreach ($pendedArticles as $pendedArticle): ?>
                     <tr>
                         <td><?php echo $pendedArticle['title']; ?></td>
                         <td><?php echo $pendedArticle['user_id']; ?></td> <!-- Assuming user_id is the author's ID -->
                         <td><?php echo $pendedArticle['content']; ?></td>
-                        <?php if ($pendedArticle['is_disabled'] == 1) : ?>
-                            <td>Reject</td>
+                        <?php if ($flag == true) : ?>
+                            <td>Pended</td>
                         <?php else : ?>
-                            <td>Approve</td>
+                        <td>
+                        <form action="" method="post">
+                            <input type="hidden" name="article_id" value="<?php echo $pendedArticle['id']; ?>">
+                            <button type="submit" name="approve">Approve</button>
+                            <button type="submit" name="reject">Reject</button>
+                        </form>
+                        </td>
                         <?php endif ?>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
-        </thead>
-    </table>
-    <a href="../index.php" class="logout">Back</a>   
+        </table>
+    <a href="coordinator_manage_article.php">Back</a>
 </body>
-</html>
