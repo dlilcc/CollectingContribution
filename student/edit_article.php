@@ -94,22 +94,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Edit Article - University Magazine</title>
     <!-- Include CKEditor -->
     <script src="https://cdn.ckeditor.com/4.17.2/standard/ckeditor.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
+
 </head>
 <body>
-    <h1>Edit Article</h1>
-    <form id="articleForm" action="" method="post" enctype="multipart/form-data">
-        <label for="article_title">Article Title:</label><br>
-        <input type="text" id="article_title" name="article_title" value="<?php echo htmlspecialchars($article['title']); ?>" required><br><br>
-        <label for="article_content">Article Content:</label><br>
-        <!-- Include textarea for CKEditor -->
-        <textarea id="article_content" name="article_content" required><?php echo htmlspecialchars($article['content']); ?></textarea>
-        <br><br>
-        <!-- Include file input for image upload -->
-        <label for="article_image">Article Image:</label><br>
-        <input type="file" id="article_image" name="article_image">
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
+
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>Edit Article</h1>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-around bg-secondary mb-3 align-items-center">  
+            <div class="col ">
+                <a href="../student/manage_article.php" class="btn btn-outline-primary align-items-center">Back</a>  
+            </div>
+            <div class="col text-center">
+                <h1><?php echo htmlspecialchars($article['title']); ?></h1>       
+            </div>
+            <div class="col">
+
+            </div>    
+        </div>
+    </div>
+    
+    <Div class="container">
+        <form id="articleForm" action="" method="post" enctype="multipart/form-data" class="border rounded p-3 shadow">
+            <div class="row mb-2">
+                <label class="col col-xl-2 col-form-label text-start custom-label" for="article_title">Article Title:</label>
+                <div class="col col-xl-10">
+                    <input class="col form-control" type="text" id="article_title" name="article_title" value="<?php echo htmlspecialchars($article['title']); ?>" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col col-xl-2 col-form-label text-start custom-label" for="article_content">Article Content:</label>
+                <div class="col col-xl-10">
+                    <input type="file" name="document" class="form-control">
+                </div>
+            </div>
+            
+            <!-- Include file input for image upload -->
+            <div class="row mb-3">
+                <label class="col col-xl-2 col-form-label text-start custom-label" for="article_image">Article Image:</label>
+                <div class="col col-xl-10">
+                    <input class="col form-control" type="file" id="article_image" name="article_image">
+                </div>
+            </div>
+
+            <!-- Include textarea for CKEditor -->
+            <div class="row bm-3">
+                <div class="col col-xl-12">
+                    <textarea id="article_content" name="article_content" required><?php echo htmlspecialchars($article['content']); ?></textarea>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-checkbox">
+                    <label for="agree_terms">
+                        <input class="form-check-input" type="checkbox" name="agree_terms" id="agree_terms" required>
+                        <label class="form-check-label" for="flexCheckIndeterminate">
+                            I agree to the Terms and Conditions
+                        </label>
+                    </label>
+                    <!--<button type="submit">Submit</button>-->
+                    <button class="btn btn-secondary" type="submit" name="submit">Submit</button>
+                </div>
+            </form>
+        </form>
+    </Div>
 
     <!-- Initialize CKEditor -->
     <script>

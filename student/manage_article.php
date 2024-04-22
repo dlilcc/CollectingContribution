@@ -140,54 +140,80 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
     integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
     crossorigin="anonymous" />
+    <<style>
+        .custom-table {
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .custom-table thead {
+        text-align: center;
+        vertical-align: middle;
+        }
+        .thead-dark{        
+        text-align: center;
+        vertical-align: middle;
+        }
+        .custom-label {
+            display: inline-block;
+            width: auto;
+        }
+    </style>
 
 
 </head>
 <body>
-    <div class="nav">
-        <h1>Manage Articles</h1>        
-        <a href="../index.php" class="btn btn-primary button-back" role="button">Back</a>    
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>Manage Articles</h1>
     </div>
-    <div class="container mt-3">
-        <table class="table-manager">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($articles as $article): ?>
+    
+    <div class="container">
+        <div class=" justify-content-around bg-secondary mb-3">  
+            <a href="../index.php" class="btn btn-outline-primary">Back</a>             
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col-md-12">
+
+            <table class="table custom-table table-bordered table-shadow border rounded">
+                <thead>
                     <tr>
-                        <td><?php echo htmlspecialchars($article['title']); ?></td>
-                        <td>
-                            
-                            <a class="table-manager-link" href="view_article.php?id=<?php echo $article['id']; ?>">
-                                <button class="btn btn-warning btn-manager-view">
-                                    View
-                                </button>
-                            </a>
-                            <a class="table-manager-link " href="edit_article.php?id=<?php echo $article['id']; ?>">
-                                <button class="btn btn-secondary btn-manager-edit">Edit</button>
-                            </a>
-                            <a class="table-manager-link " href="delete_article.php?id=<?php echo $article['id']; ?>">
-                                <button class="btn btn-danger btn-manager-delete">Delete</button>
-                            </a>
-                            <?php if ($article['is_published'] == 1 && $article['is_disabled'] == 0): ?>
-                                <a class="table-manager-link" href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
-                            <?php endif; ?>
-                            <?php if ($article['is_disabled'] == 1 && $article['is_published'] == 0): ?>
-                                <t>Rejected</t>
-                            <?php endif; ?>
-                            <?php if ($article['is_published'] == 0 && $article['is_disabled'] == 0): ?>
-                                <t>Waiting</t>
-                            <?php endif; ?>
-                        </td>
+                        <th>Title</th>
+                        <th>Action</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        
+                </thead>
+                <tbody>
+                    <?php foreach ($articles as $article): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($article['title']); ?></td>
+                            <td>
+                                
+                                <a class="table-manager-link" href="view_article.php?id=<?php echo $article['id']; ?>">
+                                    <button class="btn btn-warning btn-manager-view">
+                                        View
+                                    </button>
+                                </a>
+                                <a class="table-manager-link " href="edit_article.php?id=<?php echo $article['id']; ?>">
+                                    <button class="btn btn-secondary btn-manager-edit">Edit</button>
+                                </a>
+                                <a class="table-manager-link " href="delete_article.php?id=<?php echo $article['id']; ?>">
+                                    <button class="btn btn-danger btn-manager-delete">Delete</button>
+                                </a>
+                                <?php if ($article['is_published'] == 1 && $article['is_disabled'] == 0): ?>
+                                    <a class="table-manager-link" href="download_article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Download as Word</a>
+                                <?php endif; ?>
+                                <?php if ($article['is_disabled'] == 1 && $article['is_published'] == 0): ?>
+                                    <t>Rejected</t>
+                                <?php endif; ?>
+                                <?php if ($article['is_published'] == 0 && $article['is_disabled'] == 0): ?>
+                                    <t>Waiting</t>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>

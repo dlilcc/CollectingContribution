@@ -61,6 +61,13 @@ if ($user_role === 'manager') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Feed - University Magazine</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
+
     <style>
         .article {
             margin-bottom: 20px;
@@ -72,44 +79,71 @@ if ($user_role === 'manager') {
     </style>
 </head>
 <body>
-    <h1>News Feed</h1>
-
-    <!-- Faculty selection form for Marketing Manager -->
-    <?php if ($user_role === 'manager') : ?>
-        <form method="post">
-            <label for="faculty">Select Faculty:</label>
-            <select name="faculty" id="faculty">
-                <option value="">All Faculties</option>
-                <?php foreach ($faculties as $faculty) : ?>
-                    <option value="<?php echo htmlspecialchars($faculty['faculty_name']); ?>" <?php echo ($selected_faculty === $faculty['faculty_name']) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($faculty['faculty_name']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit">Filter</button>
-        </form>
-    <?php endif; ?>
-
-    <div>
-        <?php foreach ($articles as $article): ?>
-            <div class="article">
-                <h2><?php echo htmlspecialchars($article['title']); ?></h2>
-                <?php if (!empty($article['image_url'])): ?>
-                    <img src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Image">
-                <?php endif; ?>
-                <p><a href="student/view_article.php?id=<?php echo $article['id']; ?>">Read more</a></p>
-                <?php
-                if (is_article_update_disabled() && has_role('manager')) {
-                    echo '<a href="marketing_manager/manager.php?id=' . $article['id'] . '&action=download_zip">Download ZIP</a>';
-                }
-                if (has_role('coordinator')){
-                    echo '<a href="student/download_article.php?id=' . $article['id'] . '">Download as Word</a>';
-                }
-                ?>
-            </div>
-            <hr>
-        <?php endforeach; ?>
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>View Articles</h1>
     </div>
-    <a href="index.php" class="back">Back</a>
+
+    <div class="container">
+        <div class="row justify-content-around bg-secondary mb-3 align-items-center">  
+            <div class="col ">
+                <a href="index.php" class="btn btn-primary align-items-center">Back</a>  
+            </div>
+            
+            <div class="col text-center">  
+            </div>
+
+            <div class="col">
+
+            </div>    
+        </div>
+    </div>
+    <div class="container">
+        <!-- Faculty selection form for Marketing Manager -->
+        <?php if ($user_role === 'manager') : ?>
+            <form method="post">
+                <label for="faculty">Select Faculty:</label>
+                <select name="faculty" id="faculty">
+                    <option value="">All Faculties</option>
+                    <?php foreach ($faculties as $faculty) : ?>
+                        <option value="<?php echo htmlspecialchars($faculty['faculty_name']); ?>" <?php echo ($selected_faculty === $faculty['faculty_name']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($faculty['faculty_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        <?php endif; ?>
+    
+        <div>
+            <?php foreach ($articles as $article): ?>
+                <div class="article border rounded p-3 shadow">
+                    <div class="row mb-3">
+                        <div class="col col-xl-4">
+                            <h2><?php echo htmlspecialchars($article['title']); ?></h2>
+
+                            <p><a href="student/view_article.php?id=<?php echo $article['id']; ?>">Read more</a></p>
+
+                            <?php
+                            if (is_article_update_disabled() && has_role('manager')) {
+                                echo '<a href="marketing_manager/manager.php?id=' . $article['id'] . '&action=download_zip">Download ZIP</a>';
+                            }
+                            if (has_role('coordinator')){
+                                echo '<a href="student/download_article.php?id=' . $article['id'] . '">Download as Word</a>';
+                            }
+                            ?>
+
+                        </div>
+                        <div class="col col-xl-8 text-center">                            
+                            <?php if (!empty($article['image_url'])): ?>
+                                <img class="text-center" src="<?php echo htmlspecialchars($article['image_url']); ?>" alt="Article Image">
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
 </body>
 </html>

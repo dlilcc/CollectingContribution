@@ -71,7 +71,7 @@
 
         <div class="container">
             <div class=" justify-content-around bg-secondary mb-3">  
-                <a href="../index.php" class="btn btn-outline-primary">Back</a>             
+                <a href="../index.php" class="btn btn-primary p-2 bg-primary">Back</a>             
             </div>
         </div>
         
