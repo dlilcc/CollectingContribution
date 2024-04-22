@@ -61,32 +61,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Closure Date</title>
-    <style>
-        /* Add your CSS styles here */
-        form {
-            margin-top: 20px;
-        }
-        input[type="text"], input[type="date"] {
-            width: 200px;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+    integrity="sha512-V8h7XWvMdGYJQGch1r9ctb6IK8G0AK4gJVd1CCLldAYXHX2RyM+qsy7HmqbI5HqK8Ll4H8enYXd9T1z7lAHxvA==" 
+    crossorigin="anonymous" />
 </head>
 <body>
-    <h1>Edit Closure Date</h1>
-
+    <div class="d-flex justify-content-around bg-secondary mb-3">
+        <h1>Edit Closure Date</h1>
+    </div>
+    <a href="../administrator/manage_closure_dates.php" class="btn btn-outline-primary">Back</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
     <!-- Form to edit closure date -->
-    <form action="" method="post">
-        <label for="academicYear">Academic Year:</label>
-        <input type="text" id="academicYear" name="academicYear" value="<?php echo htmlspecialchars($closureDate['academic_year']); ?>" required>
-        
-        <label for="closureDate">Closure Date:</label>
-        <input type="date" id="closureDate" name="closureDate" value="<?php echo htmlspecialchars($closureDate['closure_date']); ?>" required>
-        
-        <label for="finalClosureDate">Final Closure Date:</label>
-        <input type="date" id="finalClosureDate" name="finalClosureDate" value="<?php echo htmlspecialchars($closureDate['final_closure_date']); ?>" required>
-        
-        <button type="submit">Save Changes</button>
-    </form>
-    <a href="../index.php" class="back">Back</a>
+                <form class="border rounded p-3 shadow" action="" method="post">
+                    <div class="row mb-3">
+                        <label for="academicYear" class="col col-xl-4 col-form-label text-start custom-label">Academic Year:</label>
+                        <div class="col col-xl-8">
+                            <input class="form-control" type="text" id="academicYear" name="academicYear" value="<?php echo htmlspecialchars($closureDate['academic_year']); ?>" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="closureDate" class="col col-xl-4 col-form-label text-start custom-label">Closure Date:</label>
+                        <div class="col col-xl-8">
+                            <input class="form-control" type="date" id="closureDate" name="closureDate" value="<?php echo htmlspecialchars($closureDate['closure_date']); ?>" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="finalClosureDate" class="col col-xl-4 col-form-label text-start custom-label">Final Closure Date:</label>
+                        <div class="col col-xl-8">
+                            <input class="form-control" type="date" id="finalClosureDate" name="finalClosureDate" value="<?php echo htmlspecialchars($closureDate['final_closure_date']); ?>" required>
+                        </div>
+                    </div>
+                    <div class="center">
+                        <button class="btn btn-secondary" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

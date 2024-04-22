@@ -72,6 +72,13 @@ if ($_GET['action'] === 'download_zip') {
     if ($zip->open($zip_file, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
         // Add the Word document to the ZIP archive
         $zip->addFile($word_file, basename($word_file));
+
+        // Add the associated file to the ZIP archive
+        $article_file_path = '../uploads/' . $article['file_name']; // Assuming uploads folder for the files
+        if (file_exists($article_file_path)) {
+            $zip->addFile($article_file_path, $article['file_name']);
+        }
+
         $zip->close();
 
         // Force download the ZIP file
@@ -82,6 +89,8 @@ if ($_GET['action'] === 'download_zip') {
 
         // Delete temporary files and directory
         unlink($word_file);
+        unlink($zip_file);
+
         exit;
     } else {
         $_SESSION['error'] = 'Failed to create ZIP archive.';

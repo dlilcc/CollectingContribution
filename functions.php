@@ -173,4 +173,23 @@ function generateContributionsReport($reportType, $selectedYear) {
         return [];
     }
 }
+
+function checkComment($id) {
+    global $pdo;
+
+    $currentDate = new DateTime(); // Current date
+    $currentDate->modify('-14 days');
+    $currentDate = $currentDate->format('Y-m-d H:i:s');
+    $stmt = $pdo->prepare("SELECT comment, submission_date FROM articles WHERE id = ?");
+    $stmt->execute([$id]);
+    $article = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $submissionDate = $article['submission_date']; // Submission date
+
+    if (($currentDate > $submissionDate) && $article['comment'] == '') {
+        return false;
+    } else {
+        return true;
+    }
+}
 ?>

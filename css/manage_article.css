@@ -1,0 +1,38 @@
+body{
+    position: relative;
+}
+
+.nav{
+    display: flex;
+    justify-content: space-between;
+}
+.button-back{
+    height: 51%;
+}
+.table-manager{
+    position: absolute;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.table-manager-link{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-manager-view{
+    color: aliceblue;
+    cursor: pointer;
+}
+
+.btn-manager-edit{
+    color: aliceblue;
+    cursor: pointer;
+}
+
+.btn-manager-delete{
+    color: aliceblue;
+    cursor: pointer;
+}
+
+
