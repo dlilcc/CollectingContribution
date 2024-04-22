@@ -92,6 +92,7 @@ if (isset($_POST['reject'])) {
                         <td class="col"><?php echo $pendedArticle['content']; ?></td>
                         <?php if ($flag == true) : ?>
                             <td class="col">Pended</td>
+                            <?php $flag = false; ?>
                         <?php else : ?>
                         <td class="col">
                         <form class="text-end" action="" method="post">

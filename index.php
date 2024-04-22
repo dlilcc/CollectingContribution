@@ -116,6 +116,11 @@ $newArticles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php endif; ?>
                     <?php if (has_role('manager')) : ?>
                         <li class="nav-item">
+                            <a class="nav-link" href="marketing_coordinator/coordinator_manage_article.php" class="dropdown-item">View Pending Articles</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (has_role('manager')) : ?>
+                        <li class="nav-item">
                             <a class="nav-link" href="administrator/report.php" class="dropdown-item">Report</a>
                         </li>
                     <?php endif; ?>

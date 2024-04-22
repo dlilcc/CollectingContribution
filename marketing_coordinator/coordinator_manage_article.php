@@ -25,7 +25,7 @@ $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Fetch articles based on selected faculty
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['faculty'])) {
     $selected_faculty = $_POST['faculty'];
     if ($selected_faculty == 'all') {
         $stmt = $pdo->prepare("SELECT * FROM articles WHERE is_disabled = 0 AND is_published = 0");
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("SELECT * FROM articles WHERE is_disabled = 0 AND is_published = 0 AND faculty_name = ?");
     $stmt->execute([$user['faculty_name']]);
 }
-echo $selected_faculty;
+
 $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch pended articles based on the selected faculty
@@ -116,7 +116,7 @@ if (isset($_POST['reject'])) {
     <div class="container">
         <div class="row justify-content-around bg-secondary mb-3 align-items-center">  
             <div class="col ">
-                <a href="../marketing_coordinator.php" class="btn btn-outline-primary align-items-center">Back</a>  
+                <a href="coordinator_dashboard.php" class="btn btn-outline-primary align-items-center">Back</a>  
             </div>
             <div class="col text-center">
                 <h2 >Pending Article</h2> 
@@ -144,6 +144,7 @@ if (isset($_POST['reject'])) {
             <button type="submit">Filter</button>
         </form>
     <?php endif; ?>
+
     <div class="container">
         <table class="table table-bordered table-sm col">
             <!-- Table headers -->
@@ -173,6 +174,7 @@ if (isset($_POST['reject'])) {
                         </td>
                         <?php endif ?>
                         <td><a href="../student/view_article.php?id=<?php echo $article['id']; ?>">View Article</a></td>
+                        <td><a href="../student/download_article.php?id=<?php echo $article['id']; ?>">Download Article</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -181,6 +183,9 @@ if (isset($_POST['reject'])) {
 
     <div class="container">
         <h2 class="text-center">Submitted Article</h2>
+        <?php if (has_role('manager')) : ?>
+            <a href="../marketing_manager/download_all_approval_articles.php">Download All Approval Articles</a>
+        <?php endif ?>
         <table class="table custom-table table-bordered table-shadow border rounded">
             <thead class="thead-dark">
                 <tr>

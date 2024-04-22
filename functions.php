@@ -127,7 +127,7 @@ function is_article_update_disabled() {
 }
 
 // Function to generate report: Number of contributions per faculty or user
-function generateContributionsReport($reportType, $selectedYear) {
+function generateContributionsReport($reportType, $selectedYear, $user_faculty) {
     global $pdo;
     global $chartValue;
     global $chartType;
@@ -139,39 +139,130 @@ function generateContributionsReport($reportType, $selectedYear) {
             $sql = "SELECT faculty_name, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
             $chartValue = 'faculty_name';
             $chartType = 'column';
+
+            // Prepare the query
+            $stmt = $pdo->prepare($sql);
+            // Bind the year parameter
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            // Execute the query
+            $stmt->execute();
             break;
+
         case 'contributions_per_user':
             // SQL query to count contributions per user for the selected year
             $sql = "SELECT user_id, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year GROUP BY user_id";
             $chartValue = 'user_id';
             $chartType = 'column';
+
+            // Prepare the query
+            $stmt = $pdo->prepare($sql);
+            // Bind the year parameter
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            // Execute the query
+            $stmt->execute();
             break;
+
+        case 'contributors_per_faculty_per_year':
+            $sql = "SELECT faculty_name, YEAR(submission_date) = :year, COUNT(DISTINCT user_id) AS num_contributions FROM articles  GROUP BY faculty_name";
+            $chartValue = 'faculty_name';
+            $chartType = 'column';
+
+            // Prepare the query
+            $stmt = $pdo->prepare($sql);
+            // Bind the year parameter
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            // Execute the query
+            $stmt->execute();
+            break;
+
         case 'percentage_contributions_per_faculty':
             // SQL query to calculate the percentage of contributions by each faculty for the selected year
             $sql = "SELECT faculty_name, COUNT(*) AS num_contributions, ROUND((COUNT(*) / (SELECT COUNT(*) FROM articles WHERE YEAR(submission_date) = :year)) * 100, 2) AS contribution_percentage FROM articles WHERE YEAR(submission_date) = :year GROUP BY faculty_name";
             $chartValue = 'faculty_name';
             $chartType = 'pie';
+
+            // Prepare the query
+            $stmt = $pdo->prepare($sql);
+            // Bind the year parameter
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            // Execute the query
+            $stmt->execute();
             break;
+
+        case 'contributions_without_comment':
+            // Prepare the query
+            $stmt = $pdo->prepare("SELECT user_id, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year AND comment = 'no' AND faculty_name = :faculty GROUP BY user_id");
+            $chartValue = 'user_id';
+            $chartType = 'column';
+
+            // Bind the year parameter
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            $stmt->bindValue(':faculty', $user_faculty['faculty_name'], PDO::PARAM_STR);
+            // Execute the query
+            $stmt->execute();
+            break;
+
+        case 'contributions_without_comment_admin':
+            // Prepare the query
+            $stmt = $pdo->prepare("SELECT faculty_name, COUNT(*) AS num_contributions FROM articles WHERE YEAR(submission_date) = :year AND comment = 'no' GROUP BY faculty_name");
+            $chartValue = 'faculty_name';
+            $chartType = 'column';
+
+            // Bind the year parameter
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            // Execute the query
+            $stmt->execute();
+            break;
+
+        case 'contributions_without_comment_14_days_admin':
+            $stmt = $pdo->prepare("SELECT faculty_name, COUNT(*) AS num_contributions 
+            FROM articles 
+            WHERE YEAR(submission_date) = :year AND comment = 'no' 
+            AND submission_date <= DATE_SUB(CURDATE(), INTERVAL 14 DAY)
+            GROUP BY faculty_name");
+            $chartValue = 'faculty_name';
+            $chartType = 'column';
+
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            // Execute the query
+            $stmt->execute();
+            break;
+
+        case 'contributions_without_comment_14_days':
+            $stmt = $pdo->prepare("SELECT user_id, COUNT(*) AS num_contributions 
+            FROM articles 
+            WHERE YEAR(submission_date) = :year AND comment = 'no'  AND faculty_name = :faculty
+            AND submission_date <= DATE_SUB(CURDATE(), INTERVAL 14 DAY)
+            GROUP BY user_id");
+            $chartValue = 'user_id';
+            $chartType = 'column';
+
+            $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+            $stmt->bindValue(':faculty', $user_faculty['faculty_name'], PDO::PARAM_STR);
+            // Execute the query
+            $stmt->execute();
+            break;
+
         default:
             // Return an empty array for unknown report types
             return [];
     }
     
-    try {
-        // Prepare the query
-        $stmt = $pdo->prepare($sql);
-        // Bind the year parameter
-        $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
-        // Execute the query
-        $stmt->execute();
+    
+        // // Prepare the query
+        // $stmt = $pdo->prepare($sql);
+        // // Bind the year parameter
+        // $stmt->bindValue(':year', $selectedYear, PDO::PARAM_INT);
+        // // Execute the query
+        // $stmt->execute();
         // Fetch the results as an associative array
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
+    
         // Handle database error
-        echo "Error: " . $e->getMessage();
+        
         // Return an empty array in case of error
-        return [];
-    }
+        
+    
 }
 
 function checkComment($id) {
@@ -186,10 +277,36 @@ function checkComment($id) {
 
     $submissionDate = $article['submission_date']; // Submission date
 
-    if (($currentDate > $submissionDate) && $article['comment'] == '') {
+    if (($currentDate > $submissionDate) && $article['comment'] == 'no') {
         return false;
     } else {
         return true;
     }
+}
+
+function sanitize_filename($filename) {
+    return preg_replace('/[^A-Za-z0-9\-]/', '_', $filename);
+}
+
+function delete_directory($dir) {
+    if (!file_exists($dir)) {
+        return true;
+    }
+
+    if (!is_dir($dir)) {
+        return unlink($dir);
+    }
+
+    foreach (scandir($dir) as $item) {
+        if ($item == '.' || $item == '..') {
+            continue;
+        }
+
+        if (!delete_directory($dir . DIRECTORY_SEPARATOR . $item)) {
+            return false;
+        }
+    }
+
+    return rmdir($dir);
 }
 ?>

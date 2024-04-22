@@ -21,11 +21,17 @@
     <a href="../index.php" class="btn btn-outline-primary">Back</a>
 
     <?php
+    session_start();
+
     // Include necessary files
     require_once __DIR__ . '/../includes/config.php';
     require_once __DIR__ . '/../functions.php';
 
-    
+    $user_id = $_SESSION['user']['id'];
+    $stmt = $pdo->prepare("SELECT faculty_name FROM users WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $user_faculty = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
     // Initialize $reportData variable
     $reportData = [];
@@ -37,7 +43,7 @@
         // Get the selected year
         $selectedYear = $_POST['year'];
         // Generate the report based on the selected report type
-        $reportData = generateContributionsReport($reportType, $selectedYear);
+        $reportData = generateContributionsReport($reportType, $selectedYear,  $user_faculty);
     }
     ?>
 
@@ -55,7 +61,23 @@
                 function drawChart() {
                     var data = new google.visualization.DataTable();
                     data.addColumn('string', 'Faculty/User');
-                    data.addColumn('number', 'Number of Contributions');
+                    
+                    <?php if ($reportType == 'contributions_per_faculty' || $reportType == 'contributions_per_user' || $reportType == 'percentage_contributions_per_faculty') : ?>
+                        data.addColumn('number', 'Number of Contributions');
+                    <?php endif ?>
+
+                    <?php if ($reportType == 'contributors_per_faculty_per_year') : ?>
+                        data.addColumn('number', 'Number of Contributors');
+                    <?php endif ?>
+
+                    <?php if ($reportType == 'contributions_without_comment' || $reportType == 'contributions_without_comment_admin') : ?>
+                        data.addColumn('number', 'Contribution without comment');
+                    <?php endif ?>
+
+                    <?php if ($reportType == 'contributions_without_comment_14_days_admin' || $reportType == 'contributions_without_comment_14_days') : ?>
+                        data.addColumn('number', 'Contribution without comment 14 days');
+                    <?php endif ?>
+                    
                     <?php foreach ($reportData as $row) : ?>
                         data.addRow(['<?php echo $row[$chartValue]; ?>', <?php echo $row['num_contributions']; ?>]);
                     <?php endforeach; ?>
@@ -65,7 +87,6 @@
                         width: '100%',
                         height: 400
                     };
-
                     
                     <?php if ($chartType == 'pie') : ?>
                         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -89,7 +110,20 @@
                 <select class="form-select" name="report_type" id="report_type">
                     <option value="contributions_per_faculty">Number of Contributions per Faculty</option>
                     <option value="contributions_per_user">Number of Contributions per User</option>
+                    <option value="contributors_per_faculty_per_year">Number of Contributors per Faculty</option>
                     <option value="percentage_contributions_per_faculty">Percentage of Contributions</option>
+                    
+                    <?php if (has_role('admin') || has_role('mananger')) : ?>
+                        <option value="contributions_without_comment_admin">Contributions without Comment</option>
+                    <?php else : ?>
+                        <option value="contributions_without_comment">Contributions without Comment</option>
+                    <?php endif ?>
+                    
+                    <?php if (has_role('admin') || has_role('mananger')) : ?>
+                        <option value="contributions_without_comment_14_days_admin"> Contributions without a comment after 14 days</option>
+                    <?php else : ?>
+                        <option value="contributions_without_comment_14_days"> Contributions without a comment after 14 days</option>
+                    <?php endif ?>
                 </select>
             </div>
             <div class="input-group mt-3 mb-3">

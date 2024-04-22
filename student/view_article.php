@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
     $comment_text = $_POST['comment_text'];
 
     // Insert comment into database
-    $stmt = $pdo->prepare("INSERT INTO comments (article_id, coordinator_id, comment_text) VALUES (?, ?, ?)");
-    $stmt->execute([$article_id, $coordinator_id, $comment_text]);
+    $stmt = $pdo->prepare("INSERT INTO comments (article_id, user_id, comment_text) VALUES (?, ?, ?)");
+    $stmt->execute([$article_id, $user_id, $comment_text]);
 
     $comment = 'yes';
     $stmt = $pdo->prepare("UPDATE articles SET comment = ? WHERE id = ?");
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
                         foreach ($comments as $comment) {
                             echo "<p class='bg-info text-white rounded p-3'>{$comment['comment_text']}</p>";
                             echo "<div class='mb-3 text-center'>";
-                            echo "<small>Posted by Coordinator {$comment['coordinator_id']} at {$comment['created_at']}</small>";
+                            echo "<small>Posted by user {$comment['user_id']} at {$comment['created_at']}</small>";
                             echo "</div>";
                         }
                         ?>
@@ -119,8 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_comment'])) {
         </div> 
 
         <!-- Form for coordinators to leave comments -->
-        <?php if (has_role("coordinator") && checkComment($article_id)) : ?> 
-            <?php echo checkComment($article_id); ?>
+        <?php if ((has_role("coordinator") && checkComment($article_id)) || !has_role('coordinator')) : ?> 
         <form method="post">
             <textarea name="comment_text" placeholder="Leave a comment..." required></textarea>
             <input type="hidden" name="article_id" value="<?php echo $article_id; ?>">
