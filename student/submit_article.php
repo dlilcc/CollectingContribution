@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insert article into database with submission date, image URL, and file name
         try {
-            $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date, file_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO articles (title, content, image_url, user_id, submission_date, faculty_name, closure_date, final_closure_date, file_name, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'no')");
             $stmt->execute([$articleTitle, $articleContent, $imageUrl, $userId, $currentDate, $facultyName, $closureDates['closure_date'], $closureDates['final_closure_date'], $documentName]);
             
             // Sending notification for the Coordinator 

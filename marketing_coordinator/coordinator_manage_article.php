@@ -170,11 +170,13 @@ if (isset($_POST['reject'])) {
                                 <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
                                 <button type="submit" name="approve">Approve</button>
                                 <button type="submit" name="reject">Reject</button>
+                                <a href="../student/view_article.php?id=<?php echo $article['id']; ?>">View Article</a>
+                                <a href="../student/download_article.php?id=<?php echo $article['id']; ?>">Download Article</a>
                             </form>
+
                         </td>
                         <?php endif ?>
-                        <td><a href="../student/view_article.php?id=<?php echo $article['id']; ?>">View Article</a></td>
-                        <td><a href="../student/download_article.php?id=<?php echo $article['id']; ?>">Download Article</a></td>
+
                     </tr>
                 <?php endforeach; ?>
             </tbody>
